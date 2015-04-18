@@ -62,7 +62,7 @@ class Enemy extends FlxSprite
 	{
 		if (seesPlayer)
 		{
-			_brain.activeState = chase;
+			//_brain.activeState = chase;
 		}
 		else if (_idleTmr <= 0)
 		{

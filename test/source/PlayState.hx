@@ -74,8 +74,6 @@ class PlayState extends FlxState
 		_hud = new HUD();
 		add(_hud);
 		
-		_combatHud = new CombatHUD();
-		add(_combatHud);
 		
 		_sndCoin = FlxG.sound.load(AssetPaths.coin__wav);
 		
@@ -150,43 +148,7 @@ class PlayState extends FlxState
 			FlxG.overlap(_player, _grpCoins, playerTouchCoin);
 			FlxG.collide(_grpEnemies, _mWalls);
 			_grpEnemies.forEachAlive(checkEnemyVision);
-			FlxG.overlap(_player, _grpEnemies, playerTouchEnemy);
-		}
-		else
-		{
-			if (!_combatHud.visible)
-			{
-				_health = _combatHud.playerHealth;
-				_hud.updateHUD(_health, _money);
-				if (_combatHud.outcome == DEFEAT)
-				{
-					_ending = true;
-					FlxG.camera.fade(FlxColor.BLACK, .33, false, doneFadeOut);
-				}
-				else
-				{
-					if (_combatHud.outcome == VICTORY)
-					{
-						_combatHud.e.kill();
-						if (_combatHud.e.etype == 1)
-						{
-							_won = true;
-							_ending = true;
-							FlxG.camera.fade(FlxColor.BLACK, .33, false, doneFadeOut);
-						}
-					}
-					else 
-					{
-						_combatHud.e.flicker();
-					}
-					#if mobile
-					virtualPad.visible = true;
-					#end
-					_inCombat = false;
-					_player.active = true;
-					_grpEnemies.active = true;
-				}
-			}
+			//FlxG.overlap(_player, _grpEnemies, playerTouchEnemy);
 		}
 	}
 	
