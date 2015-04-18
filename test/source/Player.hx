@@ -48,7 +48,7 @@ class Player extends FlxSprite
 		
 		_lumosity = 3;
 		
-		_candle = new Candle(X, Y);
+		_candle = new Candle();
 		
 	}
 	
@@ -136,7 +136,7 @@ class Player extends FlxSprite
 	{
 		movement();
 		super.update();
-		_candle.setPosition(x, y);
+		_candle.updatePosition(x, y);
 	}
 	
 	override public function destroy():Void 
