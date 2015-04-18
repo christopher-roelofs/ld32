@@ -156,6 +156,7 @@ class PlayState extends FlxState
 		{
 			FlxG.collide(_player, _mWalls);
 			FlxG.overlap(_player, _grpCoins, playerTouchCoin);
+			FlxG.overlap(_player, _grpContainers, playerTouchContainer);
 			FlxG.collide(_grpEnemies, _mWalls);
 			_grpEnemies.forEachAlive(checkEnemyVision);
 			//FlxG.overlap(_player, _grpEnemies, playerTouchEnemy);
@@ -204,6 +205,14 @@ class PlayState extends FlxState
 			_sndCoin.play(true);
 			_money++;
 			_hud.updateHUD(_health, _money);
+			C.kill();
+		}
+	}
+	
+	private function playerTouchContainer(P:Player, C:Container):Void
+	{
+		if (P.alive && P.exists && C.alive && C.exists)
+		{
 			C.kill();
 		}
 	}
