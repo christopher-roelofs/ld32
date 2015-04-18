@@ -1,9 +1,11 @@
 package;
 
 import flixel.addons.editors.ogmo.FlxOgmoLoader;
+import flash.display.Graphics;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxObject;
+import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxTypedGroup;
 import flixel.system.FlxSound;
@@ -11,9 +13,14 @@ import flixel.tile.FlxTilemap;
 import flixel.ui.FlxVirtualPad;
 import flixel.util.FlxColor;
 import flixel.util.FlxDestroyUtil;
-using flixel.util.FlxSpriteUtil;
-import ld32.Sparkler;
+import flixel.util.FlxPoint;
 import flixel.util.FlxRandom;
+import flash.filters.ColorMatrixFilter;
+import flash.geom.Rectangle;
+import openfl.display.BitmapData;
+using flixel.util.FlxSpriteUtil;
+import flash.geom.Point;
+import ld32.Sparkler;
 
 /**
  * A FlxState which can be used for the actual gameplay.
@@ -36,7 +43,15 @@ class PlayState extends FlxState
 	private var _won:Bool;
 	private var _paused:Bool;
 	private var _sndCoin:FlxSound;
-	//private var _sparkler:Sparkler;
+	private var _lightFilter:ColorMatrixFilter;
+	private var _darkFilter:ColorMatrixFilter;
+	private var _frameBuffer:BitmapData;	
+	private var _lightSourceBuffer:FlxSprite;
+	private var _darkBuffer:FlxSprite;	
+	private var _lightSourceMask:FlxSprite;
+	private var _darkMask:FlxSprite;
+	private var _nonHudRect:Rectangle;
+	private var _nonHudPoint:Point;
 	
 	#if mobile
 	public static var virtualPad:FlxVirtualPad;
@@ -89,8 +104,32 @@ class PlayState extends FlxState
 		
 		FlxG.camera.fade(FlxColor.BLACK, .33, true);
 		
+		
+		_darkFilter = new ColorMatrixFilter([0.5,0,0,0,0, 0,1,0,0,0, 0,0,1,0,0, 0,0,0,0.25,0]);	
+		_lightFilter = new ColorMatrixFilter([1,0,0,0,0, 0,1,0,0,0, 0,0,0.75,0,0, 0,0,0,1,0]);	
+		
+		_nonHudRect = new Rectangle(0, 20, FlxG.camera.width, FlxG.camera.height - 20);
+		_nonHudPoint = new Point(0, 20);
+		
+		_lightSourceMask = new FlxSprite(0, 0);
+		_lightSourceMask.pixels = new BitmapData(FlxG.camera.width, FlxG.camera.height - 20, true, 0x00000000);
+		_darkMask = new FlxSprite(0, 0);
+		_darkMask.pixels = new BitmapData(FlxG.camera.width, FlxG.camera.height - 20, true, 0xFFFFFFFF);
+		_frameBuffer = new BitmapData(FlxG.camera.width, FlxG.camera.height - 20, true, 0x00000000);		
+		_lightSourceBuffer = new FlxSprite(0, 0);
+		_lightSourceBuffer.pixels = new BitmapData(FlxG.camera.width, FlxG.camera.height - 20, true, 0x00000000);
+		_darkBuffer = new FlxSprite(0, 0);
+		_darkBuffer.pixels = new BitmapData(FlxG.camera.width, FlxG.camera.height - 20, true, 0x00000000);
+		
+
 		super.create();	
 		
+	}
+	
+	public function addLightSource(point:FlxPoint, radius:Float):Void
+	{
+		FlxSpriteUtil.drawCircle(_lightSourceMask, point.x - _nonHudPoint.x, point.y - _nonHudPoint.y, radius, FlxColor.WHITE, { color: FlxColor.WHITE, thickness: 1}, { color: FlxColor.WHITE, alpha: 1});
+		FlxSpriteUtil.drawCircle(_darkMask, point.x - _nonHudPoint.x, point.y - _nonHudPoint.y, radius, FlxColor.TRANSPARENT, { color: FlxColor.TRANSPARENT, thickness: 1 }, { color: FlxColor.TRANSPARENT, alpha: 1 } );
 	}
 	
 	private function placeEntities(entityName:String, entityData:Xml):Void
@@ -146,6 +185,10 @@ class PlayState extends FlxState
 	 */
 	override public function update():Void
 	{
+		
+		_lightSourceMask.fill(0x00000000);
+		_darkMask.fill(0xFFFFFFFF);
+		
 		super.update();
 
 		if (_ending)
@@ -162,7 +205,31 @@ class PlayState extends FlxState
 			_grpEnemies.forEachAlive(checkEnemyVision);
 			//FlxG.overlap(_player, _grpEnemies, playerTouchEnemy);
 		}
+		
+		
+		
 	}
+	
+	override public function draw():Void 
+	{
+		super.draw();
+		
+		_lightSourceBuffer.pixels.copyPixels(FlxG.camera.buffer, _nonHudRect, new Point());
+		_darkBuffer.pixels.copyPixels(FlxG.camera.buffer, _nonHudRect, new Point());
+		FlxSpriteUtil.alphaMaskFlxSprite(_lightSourceBuffer, _lightSourceMask, _lightSourceBuffer);
+		_lightSourceBuffer.dirty = true;
+		_lightSourceBuffer.drawFrame(true);
+		_lightSourceBuffer.framePixels.applyFilter(_lightSourceBuffer.framePixels, _lightSourceBuffer.framePixels.rect, new Point(), _lightFilter);		
+		FlxSpriteUtil.alphaMaskFlxSprite(_darkBuffer, _darkMask, _darkBuffer);
+		_darkBuffer.dirty = true;
+		_darkBuffer.drawFrame(true);
+		_darkBuffer.framePixels.applyFilter(_darkBuffer.framePixels, _darkBuffer.framePixels.rect, new Point(), _darkFilter);
+		_darkBuffer.framePixels.copyPixels(_lightSourceBuffer.framePixels, _lightSourceBuffer.framePixels.rect, new Point(), null, null, true);
+
+		FlxG.camera.buffer.copyPixels(_darkBuffer.framePixels, _darkBuffer.framePixels.rect, _nonHudPoint);
+		
+	}
+	
 	
 	private function doneFadeOut():Void 
 	{

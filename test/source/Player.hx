@@ -8,6 +8,7 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxAngle;
 import flixel.util.FlxColor;
 import flixel.util.FlxDestroyUtil;
+import flixel.util.FlxPoint;
 import haxe.Log;
 import ld32.Candle;
 
@@ -166,6 +167,8 @@ class Player extends FlxSprite
 		movement();
 		super.update();
 		_candle.updatePosition(x, y);
+		
+		_playState.addLightSource(getGraphicMidpoint().subtractPoint(offset), 30);
 	}
 	
 	override public function destroy():Void 

@@ -8,6 +8,9 @@ import flixel.util.FlxColor;
 import flixel.util.FlxColorUtil;
 import openfl.filters.GlowFilter;
 import flixel.util.FlxRandom;
+import flash.filters.ColorMatrixFilter;
+import flash.geom.Point;
+import flixel.FlxG;
 
 
 /**
@@ -57,5 +60,7 @@ class Candle extends FlxTypedGroup<FlxSprite>
 		_pixelFilter.applyFilters();
 	}
 	
-	
+		public override function update() {	
+		super.update();
+	}
 }
