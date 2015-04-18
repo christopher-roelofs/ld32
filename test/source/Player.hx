@@ -6,8 +6,10 @@ import flixel.FlxSprite;
 import flixel.util.FlxAngle;
 import flixel.util.FlxColor;
 
+
 class Player extends FlxSprite
 {
+
 
 	public var speed:Float = 200;
 	
@@ -25,6 +27,9 @@ class Player extends FlxSprite
 		offset.set(4, 2);
 		width = 8;
 		height = 14;
+		
+
+		
 		
 	}
 	
@@ -105,7 +110,9 @@ class Player extends FlxSprite
 	override public function update():Void 
 	{
 		movement();
-		super.update();
+		super.update();		
+		
+		
 	}
 	
 }

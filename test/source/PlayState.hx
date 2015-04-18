@@ -13,6 +13,7 @@ import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxMath;
 import flixel.util.FlxPoint;
 import source.Player;
+import ld32.Sparkler;
 
 
 /**
@@ -24,6 +25,7 @@ class PlayState extends FlxState
 	private var _player:Player;
 	private var _map:FlxOgmoLoader;
 	private var _mWalls:FlxTilemap;
+	private var _sparkler:Sparkler;
 	
 	/**
 	 * Function that is called up when to state is created to set it up. 
@@ -52,6 +54,9 @@ class PlayState extends FlxState
 					{
 						_player.x = x;
 						_player.y = y;
+						_sparkler = new Sparkler(x, y);
+						_sparkler.init();
+						add(_sparkler);
 					}
 		}
 	
@@ -63,6 +68,9 @@ class PlayState extends FlxState
 	override public function destroy():Void
 	{
 		super.destroy();
+		
+		_sparkler.destroy();
+		_sparkler = null;
 	}
 	
 	/**
@@ -73,5 +81,6 @@ class PlayState extends FlxState
 		super.update();
 		
 		FlxG.collide(_player, _mWalls);
+		_sparkler.at(_player);
 	}	
 }
