@@ -1,22 +1,24 @@
-package source;
+package;
 
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
+import flixel.system.FlxSound;
+import flixel.ui.FlxButton;
 import flixel.util.FlxAngle;
 import flixel.util.FlxColor;
-
+import flixel.util.FlxDestroyUtil;
 
 class Player extends FlxSprite
 {
-
-
 	public var speed:Float = 200;
+	private var _sndStep:FlxSound;
 	
 	public function new(X:Float=0, Y:Float=0) 
 	{
 		super(X, Y);
-		loadGraphic("assets/images/player.png", true, 16, 16);
+		
+		loadGraphic(AssetPaths.player__png, true, 16, 16);
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);
 		animation.add("d", [0, 1, 0, 2], 6, false);
@@ -25,32 +27,8 @@ class Player extends FlxSprite
 		drag.x = drag.y = 1600;
 		setSize(8, 14);
 		offset.set(4, 2);
-		width = 8;
-		height = 14;
 		
-
-		
-		
-	}
-	
-	override public function draw():Void 
-	{
-		if (velocity.x != 0 || velocity.y != 0)
-		{
-			switch(facing)
-			{
-				case FlxObject.LEFT, FlxObject.RIGHT:
-					animation.play("lr");
-					
-				case FlxObject.UP:
-					animation.play("u");
-					
-				case FlxObject.DOWN:
-					animation.play("d");
-			}
-		}
-			
-		super.draw();
+		_sndStep = FlxG.sound.load(AssetPaths.step__wav);
 	}
 	
 	private function movement():Void
@@ -60,10 +38,18 @@ class Player extends FlxSprite
 		var _left:Bool = false;
 		var _right:Bool = false;
 		
+		#if !FLX_NO_KEYBOARD
 		_up = FlxG.keys.anyPressed(["UP", "W"]);
 		_down = FlxG.keys.anyPressed(["DOWN", "S"]);
 		_left = FlxG.keys.anyPressed(["LEFT", "A"]);
 		_right = FlxG.keys.anyPressed(["RIGHT", "D"]);
+		#end
+		#if mobile
+		_up = _up || PlayState.virtualPad.buttonUp.status == FlxButton.PRESSED;
+		_down = _down || PlayState.virtualPad.buttonDown.status == FlxButton.PRESSED;
+		_left  = _left || PlayState.virtualPad.buttonLeft.status == FlxButton.PRESSED;
+		_right = _right || PlayState.virtualPad.buttonRight.status == FlxButton.PRESSED;
+		#end
 		
 		if (_up && _down)
 			_up = _down = false;
@@ -105,14 +91,36 @@ class Player extends FlxSprite
 			}
 			FlxAngle.rotatePoint(speed, 0, 0, 0, mA, velocity);
 		}
+		
+		if ((velocity.x != 0 || velocity.y != 0) && touching == FlxObject.NONE)
+		{
+			_sndStep.play();
+			
+			switch(facing)
+			{
+				case FlxObject.LEFT, FlxObject.RIGHT:
+					animation.play("lr");
+					
+				case FlxObject.UP:
+					animation.play("u");
+					
+				case FlxObject.DOWN:
+					animation.play("d");
+			}
+		}
+		
 	}
 	
 	override public function update():Void 
 	{
 		movement();
-		super.update();		
-		
-		
+		super.update();
 	}
 	
+	override public function destroy():Void 
+	{
+		super.destroy();
+		
+		_sndStep = FlxDestroyUtil.destroy(_sndStep);
+	}
 }
