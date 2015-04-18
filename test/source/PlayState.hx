@@ -41,7 +41,7 @@ class PlayState extends FlxState
 		_player = new Player();
 		_map.loadEntities(placeEntities, "entities");
 		add(_player);
-		
+		add(_sparkler);
 		super.create();	
 		
 	}
@@ -56,7 +56,7 @@ class PlayState extends FlxState
 						_player.y = y;
 						_sparkler = new Sparkler(x, y);
 						_sparkler.init();
-						add(_sparkler);
+
 					}
 		}
 	
