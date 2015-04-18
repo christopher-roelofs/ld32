@@ -8,15 +8,31 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxAngle;
 import flixel.util.FlxColor;
 import flixel.util.FlxDestroyUtil;
+import ld32.Candle;
 
 class Player extends FlxSprite
 {
 	public var speed:Float = 200;
 	private var _sndStep:FlxSound;
 	
+	private var _lumosity:Int;
+	private var _candle:Candle;
+	
+	
+	private var _playState:PlayState;
+	
+	
+	public function addToPlayState(playState:PlayState) {
+		_playState = playState;
+		_playState.add(this);
+		_playState.add(_candle);
+	}
+	
 	public function new(X:Float=0, Y:Float=0) 
 	{
 		super(X, Y);
+		
+
 		
 		loadGraphic(AssetPaths.player__png, true, 16, 16);
 		setFacingFlip(FlxObject.LEFT, false, false);
@@ -29,6 +45,11 @@ class Player extends FlxSprite
 		offset.set(4, 2);
 		
 		_sndStep = FlxG.sound.load(AssetPaths.step__wav);
+		
+		_lumosity = 3;
+		
+		_candle = new Candle(X, Y);
+		
 	}
 	
 	private function movement():Void
@@ -115,12 +136,13 @@ class Player extends FlxSprite
 	{
 		movement();
 		super.update();
+		_candle.setPosition(x, y);
 	}
 	
 	override public function destroy():Void 
 	{
 		super.destroy();
-		
+		_candle = FlxDestroyUtil.destroy(_candle);
 		_sndStep = FlxDestroyUtil.destroy(_sndStep);
 	}
 }

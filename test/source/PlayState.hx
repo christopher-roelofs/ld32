@@ -34,7 +34,7 @@ class PlayState extends FlxState
 	private var _won:Bool;
 	private var _paused:Bool;
 	private var _sndCoin:FlxSound;
-	private var _sparkler:Sparkler;
+	//private var _sparkler:Sparkler;
 	
 	#if mobile
 	public static var virtualPad:FlxVirtualPad;
@@ -65,9 +65,9 @@ class PlayState extends FlxState
 		
 		_map.loadEntities(placeEntities, "entities");
 		
-		add(_player);
+		_player.addToPlayState(this);
 		
-		add(_sparkler);
+		//add(_sparkler);
 		
 		FlxG.camera.follow(_player, FlxCamera.STYLE_TOPDOWN, 1);
 		
@@ -98,8 +98,8 @@ class PlayState extends FlxState
 		{
 			_player.x = x;
 			_player.y = y;
-			_sparkler = new Sparkler(x, y);
-			_sparkler.init();
+			//_sparkler = new Sparkler(x, y);
+			//_sparkler.init();
 		}
 		else if (entityName == "coin")
 		{
