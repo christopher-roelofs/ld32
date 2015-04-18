@@ -13,20 +13,21 @@ import flixel.util.FlxColor;
 import flixel.util.FlxDestroyUtil;
 using flixel.util.FlxSpriteUtil;
 import ld32.Sparkler;
-
+import flixel.util.FlxRandom;
 
 /**
  * A FlxState which can be used for the actual gameplay.
  */
 class PlayState extends FlxState
 {
+	
 	private var _player:Player;
 	private var _map:FlxOgmoLoader;
 	private var _mWalls:FlxTilemap;
 	private var _grpCoins:FlxTypedGroup<Coin>;
 	private var _grpContainers:FlxTypedGroup<Container>;
 	private var _grpEnemies:FlxTypedGroup<Enemy>;
-	private var _hud:HUD;
+	public var _hud:HUD;
 	private var _money:Int = 0;
 	private var _health:Int = 3;
 	private var _inCombat:Bool = false;
@@ -213,7 +214,9 @@ class PlayState extends FlxState
 	{
 		if (P.alive && P.exists && C.alive && C.exists)
 		{
+			P.updateFwInventory(FlxRandom.intRanged(1, 4));
 			C.kill();
+			
 		}
 	}
 }

@@ -16,8 +16,8 @@ class Container extends FlxSprite
 	override public function kill():Void 
 	{
 		alive = false;
-		
-		FlxTween.tween(this, { alpha:0, y:y - 16 }, .66, {ease:FlxEase.circOut, complete:finishKill } );
+		exists = false;
+		//FlxTween.tween(this, { alpha:0, y:y - 16 }, .66, {ease:FlxEase.circOut, complete:finishKill } );
 	}
 	
 	private function finishKill(_):Void

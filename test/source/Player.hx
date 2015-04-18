@@ -8,6 +8,7 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxAngle;
 import flixel.util.FlxColor;
 import flixel.util.FlxDestroyUtil;
+import haxe.Log;
 import ld32.Candle;
 
 class Player extends FlxSprite
@@ -16,6 +17,10 @@ class Player extends FlxSprite
 	private var _sndStep:FlxSound;
 	
 	private var _lumosity:Int;
+	private var _fw1:Int = 0;
+	private var _fw2:Int = 0;
+	private var _fw3:Int = 0;
+	private var _fw4:Int = 0;
 	private var _candle:Candle;
 	
 	
@@ -26,6 +31,30 @@ class Player extends FlxSprite
 		_playState = playState;
 		_playState.add(this);
 		_playState.add(_candle);
+	}
+	
+	public function updateFwInventory(fw:Int)
+	{
+		if (fw == 1)
+		{
+			_fw1 ++;
+			
+		}
+		else if (fw == 2)
+		{
+			_fw2 ++;
+		}
+		else if (fw == 3)
+		{
+			_fw3 ++;
+		}
+		else
+		{
+			_fw4 ++;
+		}
+		
+		_playState._hud.updateFwHUD(_fw1, _fw2, _fw3, _fw4);
+		
 	}
 	
 	public function new(X:Float=0, Y:Float=0) 
