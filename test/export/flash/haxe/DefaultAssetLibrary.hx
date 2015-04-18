@@ -57,6 +57,8 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("assets/images/button.png", AssetType.IMAGE);
 		className.set ("assets/images/coin.png", __ASSET__assets_images_coin_png);
 		type.set ("assets/images/coin.png", AssetType.IMAGE);
+		className.set ("assets/images/container.png", __ASSET__assets_images_container_png);
+		type.set ("assets/images/container.png", AssetType.IMAGE);
 		className.set ("assets/images/enemy-0.png", __ASSET__assets_images_enemy_0_png);
 		type.set ("assets/images/enemy-0.png", AssetType.IMAGE);
 		className.set ("assets/images/enemy-1.png", __ASSET__assets_images_enemy_1_png);
@@ -127,6 +129,10 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		type.set (id, AssetType.IMAGE);
 		id = "assets/images/coin.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
+		id = "assets/images/container.png";
 		path.set (id, id);
 		
 		type.set (id, AssetType.IMAGE);
@@ -260,6 +266,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		
 		
+		
 		#end
 		
 		#if (windows || mac || linux)
@@ -283,6 +290,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		className.set ("assets/images/coin.png", __ASSET__assets_images_coin_png);
 		type.set ("assets/images/coin.png", AssetType.IMAGE);
+		
+		className.set ("assets/images/container.png", __ASSET__assets_images_container_png);
+		type.set ("assets/images/container.png", AssetType.IMAGE);
 		
 		className.set ("assets/images/enemy-0.png", __ASSET__assets_images_enemy_0_png);
 		type.set ("assets/images/enemy-0.png", AssetType.IMAGE);
@@ -956,6 +966,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 @:keep @:bind #if display private #end class __ASSET__assets_data_tutorial_oep extends flash.utils.ByteArray { }
 @:keep @:bind #if display private #end class __ASSET__assets_images_button_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_coin_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__assets_images_container_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_enemy_0_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_enemy_1_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__assets_images_health_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
@@ -1012,6 +1023,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 
+
 #else
 
 
@@ -1025,6 +1037,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 @:file("assets/data/tutorial.oep") #if display private #end class __ASSET__assets_data_tutorial_oep extends lime.utils.ByteArray {}
 @:image("assets/images/button.png") #if display private #end class __ASSET__assets_images_button_png extends lime.graphics.Image {}
 @:image("assets/images/coin.png") #if display private #end class __ASSET__assets_images_coin_png extends lime.graphics.Image {}
+@:image("assets/images/container.png") #if display private #end class __ASSET__assets_images_container_png extends lime.graphics.Image {}
 @:image("assets/images/enemy-0.png") #if display private #end class __ASSET__assets_images_enemy_0_png extends lime.graphics.Image {}
 @:image("assets/images/enemy-1.png") #if display private #end class __ASSET__assets_images_enemy_1_png extends lime.graphics.Image {}
 @:image("assets/images/health.png") #if display private #end class __ASSET__assets_images_health_png extends lime.graphics.Image {}

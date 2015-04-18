@@ -24,6 +24,7 @@ class PlayState extends FlxState
 	private var _map:FlxOgmoLoader;
 	private var _mWalls:FlxTilemap;
 	private var _grpCoins:FlxTypedGroup<Coin>;
+	private var _grpContainers:FlxTypedGroup<Container>;
 	private var _grpEnemies:FlxTypedGroup<Enemy>;
 	private var _hud:HUD;
 	private var _money:Int = 0;
@@ -57,6 +58,9 @@ class PlayState extends FlxState
 		
 		_grpCoins = new FlxTypedGroup<Coin>();
 		add(_grpCoins);
+		
+		_grpContainers = new FlxTypedGroup<Container>();
+		add(_grpContainers);
 		
 		_grpEnemies = new FlxTypedGroup<Enemy>();
 		add(_grpEnemies);
@@ -104,6 +108,11 @@ class PlayState extends FlxState
 			_grpCoins.add(new Coin(x + 4, y + 4));
 			
 		}
+		else if (entityName == "container")
+		{
+			_grpContainers.add(new Container(x + 4, y + 4));
+			
+		}
 		else if (entityName == "enemy")
 		{
 			_grpEnemies.add(new Enemy(x + 4, y, Std.parseInt(entityData.get("etype"))));
@@ -122,6 +131,7 @@ class PlayState extends FlxState
 		_mWalls = FlxDestroyUtil.destroy(_mWalls);
 		_grpCoins = FlxDestroyUtil.destroy(_grpCoins);
 		_grpEnemies = FlxDestroyUtil.destroy(_grpEnemies);
+		_grpContainers = FlxDestroyUtil.destroy(_grpContainers);
 		_hud = FlxDestroyUtil.destroy(_hud);
 		_combatHud = FlxDestroyUtil.destroy(_combatHud);
 		_sndCoin = FlxDestroyUtil.destroy(_sndCoin);
