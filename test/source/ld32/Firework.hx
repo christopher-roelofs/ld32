@@ -28,18 +28,28 @@ class Firework
 		_player = player;
 		fuseTime = fuseTimeDuration;
 		explosion = explooooosion;
+		explosion.init(this, playState, player);
+	if(fuseTime > 0) {
 		_fuseTimer = new FlxTimer(fuseTimeDuration, fuseExpired, 1);
 		fuse = new Fuse(_player.x, _player.y);
 		fuse.init();		
 		_playState.add(fuse);		
+	} else {
+		_fuseExpired = true;
+		_playState.add(explosion);
+		explosion.activate();
+		_explosionTimer = new FlxTimer(explosion.duration(), explosionExpired, 1);
+	}
 		isDone = false;
 		
 	}
 
 	public function setPosition(pos:FlxPoint):Void {
 		
-		fuse.setPosition(pos.x, pos.y);
-		explosion.setPosition(pos.x, pos.y);
+		if(!_fuseExpired) {
+			fuse.setPosition(pos.x, pos.y);
+			explosion.setPosition(pos.x, pos.y);
+		}
 		
 	}
 	public function fuseExpired(timer:FlxTimer):Void {		
@@ -53,6 +63,10 @@ class Firework
 		
 	}
 	
+	public function shouldCollide():Bool {
+		return (_fuseExpired && explosion.collides);
+	}
+	
 	public function explosionExpired(timer:FlxTimer):Void {
 		isDone = true;
 		_playState.remove(explosion);
@@ -60,7 +74,9 @@ class Firework
 	}
 	
 	public function destroy():Void {
-		fuse.destroy();
+		if(fuseTime > 0) {
+			fuse.destroy();
+		}
 		explosion.destroy();
 	}
 	
@@ -68,9 +84,6 @@ class Firework
 		if (!_fuseExpired) {
 			var pos = new FlxPoint(fuse.x, fuse.y);
 			_playState.addLightSource(pos, 20);
-		} else if (!isDone) {
-			var pos = new FlxPoint(explosion.x, explosion.y);
-			_playState.addLightSource(pos, 30);
 		}
 	}
 	

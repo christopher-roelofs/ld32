@@ -20,8 +20,10 @@ import flash.geom.Rectangle;
 import openfl.display.BitmapData;
 using flixel.util.FlxSpriteUtil;
 import flash.geom.Point;
-import ld32.Sparkler;
+import ld32.SparklerExplosion;
 import ld32.Firework;
+import flixel.util.FlxTimer;
+
 
 /**
  * A FlxState which can be used for the actual gameplay.
@@ -131,7 +133,7 @@ class PlayState extends FlxState
 		
 	}
 	
-		public function setLumosity(lumosity:Float) {
+	public function setLumosity(lumosity:Float) {
 		_lightFilter = new ColorMatrixFilter([1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, lumosity, 0]);
 
 	}
@@ -149,6 +151,7 @@ class PlayState extends FlxState
 	
 	public function addLightSource(point:FlxPoint, radius:Float):Void
 	{
+		point.set(point.x - (FlxG.camera.scroll.x), point.y - (FlxG.camera.scroll.y));
 		FlxSpriteUtil.drawCircle(_lightSourceMask, point.x - _nonHudPoint.x, point.y - _nonHudPoint.y, radius, FlxColor.WHITE, { color: FlxColor.WHITE, thickness: 1}, { color: FlxColor.WHITE, alpha: 1});
 		FlxSpriteUtil.drawCircle(_darkMask, point.x - _nonHudPoint.x, point.y - _nonHudPoint.y, radius, FlxColor.TRANSPARENT, { color: FlxColor.TRANSPARENT, thickness: 1 }, { color: FlxColor.TRANSPARENT, alpha: 1 } );
 	}
@@ -227,6 +230,9 @@ class PlayState extends FlxState
 		
 		for (i in 0..._fireworks.length) {
 			_fireworks[i].update();
+			if(_fireworks[i].shouldCollide()) {
+				FlxG.collide(_fireworks[i].explosion, _mWalls);
+			}
 		}
 		
 	}
@@ -257,10 +263,21 @@ class PlayState extends FlxState
 		FlxG.switchState(new GameOverState(_won, _money));
 	}
 	
-	private function playerTouchEnemy(P:Player, E:Enemy):Void
-	{
-
-	}
+	
+private function enemyCoolDown(timer:FlxTimer):Void
+ {
+  _coolDown = false;
+ }
+ 
+ private function playerTouchEnemy(P:Player, E:Enemy):Void
+ {
+  if (_coolDown == false)
+  {
+   P.addHealth( -2);
+   _coolDown = true;
+   _enemyTouchCooldownTimer = new FlxTimer(1, enemyCoolDown, 1);
+ 
+  }
 	
 	private function checkEnemyVision(e:Enemy):Void
 	{

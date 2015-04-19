@@ -27,30 +27,15 @@ class Player extends FlxSprite
 	private var _fw3:Int = 0;
 	private var _fw4:Int = 0;
 	private var _candle:Candle;
-	private var _sparkler:Sparkler;	
 	private var _sparklerTimer:FlxTimer;
 	private var _holdingFirework:Firework;
-	
+	public var currentFireworkType:Int;
 	private var _playState:PlayState;
-	
-	public function usingSparkler():Bool {
-		return _sparkler.on;
-	}
 	
 	public function addToPlayState(playState:PlayState) {
 		_playState = playState;
 		_playState.add(this);
 		_playState.add(_candle);
-		_playState.add(_sparkler);		
-		_sparkler.init();		
-		_sparkler.visible = false;
-		_sparkler.on = false;
-		updateLumosityForHealth();
-	}
-	
-	public function stopSparkler(Timer:FlxTimer):Void {
-		_sparkler.on = false;
-		_sparkler.visible = false;
 		updateLumosityForHealth();
 	}
 	
@@ -91,7 +76,6 @@ class Player extends FlxSprite
 		_playState._hud.updateFwHUD(_fw1, _fw2, _fw3, _fw4);
 		
 		
-		
 	}
 	
 	public function new(X:Float=0, Y:Float=0) 
@@ -115,9 +99,14 @@ class Player extends FlxSprite
 		health = 3;
 		
 		_candle = new Candle();
-		_sparkler = new Sparkler();
-		_sparklerTimer = new FlxTimer();
 		
+		currentFireworkType = 0;
+		
+	}
+	
+	public function setCurrentFireworkType(fireworkType:Int):Void {
+		currentFireworkType = fireworkType;
+		_playState._hud.toggleFw(fireworkType);
 	}
 	
 	private function movement():Void
@@ -128,15 +117,20 @@ class Player extends FlxSprite
 		var _right:Bool = false;
 		var _togglefw1 = false;
 		
-				var useItem = false;
+		var useItem = false;
+		
+		var changedFireworkType = 0;
 		
 		#if !FLX_NO_KEYBOARD
 		_up = FlxG.keys.anyPressed(["UP", "W"]);
 		_down = FlxG.keys.anyPressed(["DOWN", "S"]);
 		_left = FlxG.keys.anyPressed(["LEFT", "A"]);
 		_right = FlxG.keys.anyPressed(["RIGHT", "D"]);
-		_togglefw1 = FlxG.keys.anyPressed(["ONE"]);
-				useItem = FlxG.keys.anyJustPressed(["SPACE"]);	
+		changedFireworkType = (FlxG.keys.anyJustPressed(["ONE"])) ? 1 : changedFireworkType;				
+		changedFireworkType = (FlxG.keys.anyJustPressed(["TWO"])) ? 2 : changedFireworkType;		
+		changedFireworkType = (FlxG.keys.anyJustPressed(["THREE"])) ? 3 : changedFireworkType;		
+		changedFireworkType = (FlxG.keys.anyJustPressed(["FOUR"])) ? 4 : changedFireworkType;		
+		useItem = FlxG.keys.anyJustPressed(["SPACE"]);	
 		#end
 		#if mobile
 		_up = _up || PlayState.virtualPad.buttonUp.status == FlxButton.PRESSED;
@@ -155,10 +149,22 @@ class Player extends FlxSprite
 		
 		*/
 		
+		if (changedFireworkType != 0) {
+			setCurrentFireworkType(changedFireworkType);
+		}
+		
 		if (useItem) {	
 			if (_holdingFirework == null) {
-				_holdingFirework = new BottleRocket(_playState, this);
-				_playState.addFirework(_holdingFirework);
+				switch(currentFireworkType) {
+					case 1:
+						_holdingFirework = new Sparkler(_playState, this);
+						_playState.addFirework(_holdingFirework);
+					case 3:
+						_holdingFirework = new BottleRocket(_playState, this);
+						_playState.addFirework(_holdingFirework);
+					default:					
+				}
+				
 			} else {
 				_holdingFirework = null;
 			}
@@ -235,12 +241,8 @@ class Player extends FlxSprite
 		super.update();
 		_candle.updatePosition(x, y);
 		
-		if(_sparkler.on) {
-			_sparkler.at(this);
-			_playState.addLightSource(getGraphicMidpoint().subtractPoint(offset), 50);
-		} else {
-			_playState.addLightSource(getGraphicMidpoint().subtractPoint(offset), 30);
-		}
+		
+		_playState.addLightSource(getGraphicMidpoint().subtractPoint(offset), 30);
 		if (_holdingFirework != null && !_holdingFirework.isDone) {			
 			_holdingFirework.setPosition(this.getGraphicMidpoint());
 		} else if (_holdingFirework != null && _holdingFirework.isDone) {
