@@ -42,12 +42,26 @@ class Player extends FlxSprite
 		_sparkler.init();		
 		_sparkler.visible = false;
 		_sparkler.on = false;
-		_playState.setLumosity(0.5 + (health / 6.0));
+		updateLumosityForHealth();
 	}
 	
 		public function stopSparkler(Timer:FlxTimer):Void {
 		_sparkler.on = false;
 		_sparkler.visible = false;
+		updateLumosityForHealth();
+	}
+	
+	public function setHealth(newHealthValue:Int) {
+		health = newHealthValue;
+		updateLumosityForHealth();
+	}
+	
+	public function addHealth(hp:Int) {
+		health += hp;
+		updateLumosityForHealth();
+	}
+
+	private function updateLumosityForHealth() {
 		_playState.setLumosity(0.5 + (health / 6.0));
 	}
 	
@@ -110,9 +124,6 @@ class Player extends FlxSprite
 		var _left:Bool = false;
 		var _right:Bool = false;
 		var _togglefw1 = false;
-		var _togglefw2 = false;
-		var _togglefw3 = false;
-		var _togglefw4 = false;
 		
 				var useItem = false;
 		
@@ -122,13 +133,7 @@ class Player extends FlxSprite
 		_left = FlxG.keys.anyPressed(["LEFT", "A"]);
 		_right = FlxG.keys.anyPressed(["RIGHT", "D"]);
 		_togglefw1 = FlxG.keys.anyPressed(["ONE"]);
-<<<<<<< HEAD
 				useItem = FlxG.keys.anyJustPressed(["SPACE"]);	
-=======
-		_togglefw2 = FlxG.keys.anyPressed(["TWO"]);
-		_togglefw3 = FlxG.keys.anyPressed(["THREE"]);
-		_togglefw4 = FlxG.keys.anyPressed(["FOUR"]);
->>>>>>> origin/master
 		#end
 		#if mobile
 		_up = _up || PlayState.virtualPad.buttonUp.status == FlxButton.PRESSED;
@@ -188,21 +193,6 @@ class Player extends FlxSprite
 		if (_togglefw1)
 		{
 		 _playState._hud.toggleFw(1);
-		}
-		
-		if (_togglefw2)
-		{
-		 _playState._hud.toggleFw(2);
-		}
-		
-		if (_togglefw3)
-		{
-		 _playState._hud.toggleFw(3);
-		}
-		
-		if (_togglefw4)
-		{
-		 _playState._hud.toggleFw(4);
 		}
 		
 		if ((velocity.x != 0 || velocity.y != 0) && touching == FlxObject.NONE)

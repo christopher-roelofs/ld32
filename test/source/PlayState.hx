@@ -36,7 +36,7 @@ class PlayState extends FlxState
 	private var _grpEnemies:FlxTypedGroup<Enemy>;
 	public var _hud:HUD;
 	private var _money:Int = 0;	
-	private var _inCombat:Bool = false;
+	private var _inCombat:Bool = false;	
 	private var _ending:Bool;
 	private var _won:Bool;
 	private var _paused:Bool;
@@ -166,7 +166,7 @@ class PlayState extends FlxState
 	/**
 	 * Function that is called when this state is destroyed - you might want to 
 	 * consider setting all objects this state uses to null to help garbage collection.
-	 */
+	 */																																																																																												
 	override public function destroy():Void
 	{
 		super.destroy();
@@ -175,7 +175,7 @@ class PlayState extends FlxState
 		_grpCoins = FlxDestroyUtil.destroy(_grpCoins);
 		_grpEnemies = FlxDestroyUtil.destroy(_grpEnemies);
 		_grpContainers = FlxDestroyUtil.destroy(_grpContainers);
-		_hud = FlxDestroyUtil.destroy(_hud);
+		_hud = FlxDestroyUtil.destroy(_hud);		
 		_sndCoin = FlxDestroyUtil.destroy(_sndCoin);
 		#if mobile
 		virtualPad = FlxDestroyUtil.destroy(virtualPad);
@@ -239,24 +239,7 @@ class PlayState extends FlxState
 	
 	private function playerTouchEnemy(P:Player, E:Enemy):Void
 	{
-<<<<<<< HEAD
 
-=======
-		if (P.alive && P.exists && E.alive && E.exists && !E.isFlickering())
-		{
-			//enemy interaction goes here
-		}
-	}
-	
-	private function startCombat(E:Enemy):Void
-	{
-		_inCombat = true;
-		_player.active = false;
-		_grpEnemies.active = false;
-		#if mobile
-		virtualPad.visible = false;
-		#end
->>>>>>> origin/master
 	}
 	
 	private function checkEnemyVision(e:Enemy):Void
@@ -270,10 +253,7 @@ class PlayState extends FlxState
 			e.seesPlayer = false;		
 	}
 	
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
 	
 	private function playerTouchContainer(P:Player, C:Container):Void
 	{
