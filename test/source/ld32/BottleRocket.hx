@@ -19,7 +19,7 @@ class BottleRocket extends Firework
 	{	
 		var explosion = new BottleRocketExplosion(player.x, player.y, 0);		
 		velocity = new FlxPoint();
-		super(3, playState, player, explosion);		
+		super(1, playState, player, explosion);		
 	}
 
 	
@@ -35,6 +35,10 @@ class BottleRocket extends Firework
 		
 		launched = true;
 		
+	}
+	
+	public override function enemyCollision(particle:FlxParticle, enemy:Enemy):Void {		
+		enemy.hurt(10);
 	}
 	
 	public override function update():Void {

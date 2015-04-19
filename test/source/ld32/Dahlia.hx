@@ -1,5 +1,8 @@
 package ld32;
 
+import flixel.effects.particles.FlxParticle;
+import flixel.tile.FlxTilemap;
+
 /**
  * ...
  * @author ...
@@ -15,6 +18,10 @@ class Dahlia extends Firework
 	
 	public override function getTypeId():Int {
 		return 4;
+	}
+	
+	public override function enemyCollision(particle:FlxParticle, enemy:Enemy):Void {		
+		enemy.hurt(30);
 	}
 	
 }

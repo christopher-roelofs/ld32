@@ -12,6 +12,9 @@ import openfl.filters.GlowFilter;
 import flash.filters.GradientGlowFilter;
 import flash.filters.BitmapFilterType;
 
+import flixel.effects.particles.FlxParticle;
+import flixel.tile.FlxTilemap;
+
 /**
  * ...
  * @author ...
@@ -62,10 +65,10 @@ class DahliaExplosion extends Explosion
 			_blackPixel.makeGraphic(4, 4, FlxColor.BLACK);
 			_blackPixel.visible = true; 
 			_pixelFilter = new FlxSpriteFilter(_blackPixel, 32, 32);
-			_blackPixel.width = 4;
-			_blackPixel.height = 4;
 			_pixelFilter.addFilter(glowFilter, true);
 			_pixelFilter.addFilter(_glowFilterLight, true);
+			_blackPixel.width = 4;
+			_blackPixel.height = 4;			
 			add(_blackPixel);
 			
 		}		

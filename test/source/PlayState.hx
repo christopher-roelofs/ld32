@@ -178,7 +178,9 @@ class PlayState extends FlxState
 		}
 		else if (entityName == "enemy")
 		{
-			_grpEnemies.add(new Enemy(x + 4, y, Std.parseInt(entityData.get("etype"))));
+			var enemy = new Enemy(x + 4, y, Std.parseInt(entityData.get("etype")));
+			enemy.health = 20;
+			_grpEnemies.add(enemy);
 		}
 		else if (entityName == "exit")
 		{
@@ -238,6 +240,10 @@ class PlayState extends FlxState
 			if(_fireworks[i].shouldCollide()) {
 				FlxG.collide(_fireworks[i].explosion, _mWalls, _fireworks[i].wallCollision);
 			}
+		}
+		
+		for (i in 0..._fireworks.length) {
+			FlxG.collide(_fireworks[i].explosion, _grpEnemies, _fireworks[i].enemyCollision);
 		}
 		
 	}
@@ -312,7 +318,7 @@ private function playerTouchContainer(P:Player, C:Container):Void
 	{
 		if (P.alive && P.exists && C.alive && C.exists)
 		{
-			P.updateFwInventory(FlxRandom.intRanged(1, 4));
+			P.updateFwInventory(FlxRandom.intRanged(1, 5));
 			C.kill();
 			
 		}

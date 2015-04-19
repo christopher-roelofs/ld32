@@ -31,17 +31,17 @@ class BottleRocketExplosion extends Explosion
 		rotation = new Bounds<Float>(0, 0);
 		setMotion(0, 400, duration(), 360, 0, 0);		
 		
-		_glowFilter = new GlowFilter(0xFF0022,0.25,16,16,10,1,false,false);
+		_glowFilter = new GlowFilter(0x2200FF,0.5,16,16,20,1,false,false);
 	
 		for (i in 0...(Std.int(maxSize))) 
 		{
 			_whitePixel = new FlxParticle();
-			_whitePixel.makeGraphic(4, 4, 0xFFAAAAAA);
+			_whitePixel.makeGraphic(4, 4, FlxColor.AZURE);
 			_whitePixel.visible = true; 
 			_pixelFilter = new FlxSpriteFilter(_whitePixel, 10, 10);
+			_pixelFilter.addFilter(_glowFilter, true);
 			_whitePixel.width = 4;
 			_whitePixel.height = 4;
-			_pixelFilter.addFilter(_glowFilter, true);
 			add(_whitePixel);
 			
 		}		

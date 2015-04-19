@@ -1,5 +1,6 @@
 package ld32;
-
+import flixel.effects.particles.FlxParticle;
+import flixel.tile.FlxTilemap;
 /**
  * ...
  * @author ...
@@ -15,6 +16,10 @@ class Sparkler extends Firework
 	
 	public override function getTypeId():Int {
 		return 1;
+	}
+	
+	public override function enemyCollision(particle:FlxParticle, enemy:Enemy):Void {		
+		enemy.hurt(5);
 	}
 	
 }

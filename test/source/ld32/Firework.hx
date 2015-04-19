@@ -105,4 +105,10 @@ class Firework
 	public function wallCollision(particle:FlxParticle, tile:FlxTilemap):Void {
 	}
 	
+	public function enemyCollision(particle:FlxParticle, enemy:Enemy):Void {		
+	}
+	
+	public function playerCollision(particle:FlxParticle, player:Player):Void {		
+	}
+	
 }

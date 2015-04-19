@@ -24,25 +24,26 @@ class FirecrackerExplosion extends Explosion
 	private var _glowFilter:GlowFilter;
 	private var _pixelFilter:FlxSpriteFilter;
 
-	public function new(X:Float=0, Y:Float=0, Size:Int=5) 
+	public function new(X:Float=0, Y:Float=0, Size:Int=20) 
 	{
-		Size = 5;
+		Size = 20;
 		super(X, Y, Size);
 		setAlpha(1, 1, 0, 0);
 		rotation = new Bounds<Float>(0, 0);
 		setMotion(0, 400, duration(), 360, 0, 0);		
 		
-		_glowFilter = new GlowFilter(0xFF0022,0.25,16,16,10,1,false,false);
+		_glowFilter = new GlowFilter(0xFF0022,0.5,16,16,20,1,false,false);
 	
 		for (i in 0...(Std.int(maxSize))) 
 		{
 			_whitePixel = new FlxParticle();
-			_whitePixel.makeGraphic(2, 2, 0xFF2222AA);
+			_whitePixel.makeGraphic(2, 2, FlxColor.WHITE);
 			_whitePixel.visible = true; 
 			_pixelFilter = new FlxSpriteFilter(_whitePixel, 10, 10);
+			_pixelFilter.addFilter(_glowFilter, true);
 			_whitePixel.width = 2;
 			_whitePixel.height = 2;
-			_pixelFilter.addFilter(_glowFilter, true);
+
 			add(_whitePixel);
 			
 		}		
@@ -224,7 +225,7 @@ class FirecrackerExplosion extends Explosion
 		{
 			particle.angle = FlxRandom.float() * 360 - 180;
 		}
-		particle.drag.set(40, 40);
+		particle.drag.set(80, 80);
 		particle.elasticity = 0;
 		particle.onEmit();
 	}
