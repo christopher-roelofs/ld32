@@ -21,6 +21,7 @@ import openfl.display.BitmapData;
 using flixel.util.FlxSpriteUtil;
 import flash.geom.Point;
 import ld32.Sparkler;
+import flixel.util.FlxTimer;
 
 /**
  * A FlxState which can be used for the actual gameplay.
@@ -50,6 +51,9 @@ class PlayState extends FlxState
 	private var _darkMask:FlxSprite;
 	private var _nonHudRect:Rectangle;
 	private var _nonHudPoint:Point;
+	private var _coolDown:Bool = false;
+	private var _enemyTouchCooldownTimer:FlxTimer;
+	
 	
 	#if mobile
 	public static var virtualPad:FlxVirtualPad;
@@ -204,7 +208,7 @@ class PlayState extends FlxState
 			FlxG.overlap(_player, _grpContainers, playerTouchContainer);
 			FlxG.collide(_grpEnemies, _mWalls);
 			_grpEnemies.forEachAlive(checkEnemyVision);
-			//FlxG.overlap(_player, _grpEnemies, playerTouchEnemy);
+			FlxG.overlap(_player, _grpEnemies, playerTouchEnemy);
 		}
 		
 		
@@ -237,9 +241,22 @@ class PlayState extends FlxState
 		FlxG.switchState(new GameOverState(_won, _money));
 	}
 	
+	private function enemyCoolDown(timer:FlxTimer):Void
+	{
+		_coolDown = false;
+	}
+	
 	private function playerTouchEnemy(P:Player, E:Enemy):Void
 	{
-
+		
+		if (_coolDown == false)
+		{
+			P.addHealth( -2);
+			_coolDown = true;
+			_enemyTouchCooldownTimer = new FlxTimer(1, enemyCoolDown, 1);
+	
+		}
+		
 	}
 	
 	private function checkEnemyVision(e:Enemy):Void
