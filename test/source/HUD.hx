@@ -78,6 +78,30 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		if (fw == 1)
 		{
 			_firework1.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.RED, 1, 1);
+			_firework2.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
+			_firework3.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
+			_firework4.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
+		}
+		else if (fw == 2)
+		{
+			_firework1.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
+			_firework2.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.RED, 1, 1);
+			_firework3.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
+			_firework4.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
+		}
+		else if (fw == 3)
+		{
+			_firework1.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
+			_firework2.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
+			_firework3.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.RED, 1, 1);
+			_firework4.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
+		}
+		else if (fw == 4)
+		{
+			_firework1.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
+			_firework2.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
+			_firework3.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
+			_firework4.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.RED, 1, 1);
 		}
 	}
 }
