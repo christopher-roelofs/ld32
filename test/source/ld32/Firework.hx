@@ -1,8 +1,12 @@
 package ld32;
 
+import flixel.FlxObject;
+import flixel.FlxSprite;
 import flixel.util.FlxTimer;
 import openfl.geom.Point;
 import flixel.util.FlxPoint;
+import flixel.effects.particles.FlxParticle;
+import flixel.tile.FlxTilemap;
 
 /**
  * ...
@@ -17,7 +21,7 @@ class Firework
 	private var _explosionTimer:FlxTimer;
 	private var _playState:PlayState;
 	private var _player:Player;
-	private var _fuseExpired:Bool;
+	public var isFuseExpired:Bool;
 	public var fuse:Fuse;
 	public var explosion:Explosion;
 	public var isDone:Bool;
@@ -35,7 +39,7 @@ class Firework
 		fuse.init();		
 		_playState.add(fuse);		
 	} else {
-		_fuseExpired = true;
+		isFuseExpired = true;
 		_playState.add(explosion);
 		explosion.activate();
 		_explosionTimer = new FlxTimer(explosion.duration(), explosionExpired, 1);
@@ -43,17 +47,28 @@ class Firework
 		isDone = false;
 		
 	}
+	
+	public function launch(direction:Float):Void {
+		
+	}
+	
+	public function getTypeId():Int {
+		return 0;
+	}
 
 	public function setPosition(pos:FlxPoint):Void {
 		
-		if(!_fuseExpired) {
+		if(!isFuseExpired) {
 			fuse.setPosition(pos.x, pos.y);
+			explosion.setPosition(pos.x, pos.y);
+		} else if(!isDone) {
 			explosion.setPosition(pos.x, pos.y);
 		}
 		
+		
 	}
 	public function fuseExpired(timer:FlxTimer):Void {		
-		_fuseExpired = true;
+		isFuseExpired = true;
 		fuse.on = false;
 		fuse.visible = false;		
 		_playState.remove(fuse);		
@@ -64,7 +79,7 @@ class Firework
 	}
 	
 	public function shouldCollide():Bool {
-		return (_fuseExpired && explosion.collides);
+		return (isFuseExpired && explosion.collides);
 	}
 	
 	public function explosionExpired(timer:FlxTimer):Void {
@@ -81,11 +96,13 @@ class Firework
 	}
 	
 	public function update():Void {
-		if (!_fuseExpired) {
+		if (!isFuseExpired) {
 			var pos = new FlxPoint(fuse.x, fuse.y);
 			_playState.addLightSource(pos, 20);
 		}
 	}
 	
+	public function wallCollision(particle:FlxParticle, tile:FlxTilemap):Void {
+	}
 	
 }

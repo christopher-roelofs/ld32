@@ -14,7 +14,7 @@ class Explosion extends FlxEmitterExt
 	private var _firework:Firework;
 	private var _playState:PlayState;
 	private var _player:Player;
-	
+	private var _frequency:Float;
 	
 	public var isFinished:Bool;
 	public var isStarted:Bool;
@@ -27,6 +27,8 @@ class Explosion extends FlxEmitterExt
 		isFinished = false;
 		isStarted = false;
 		collides = true;
+		_frequency = 0.01;
+		
 	}
 	
 	public function init(firework:Firework, playState:PlayState, player:Player):Void {
@@ -36,7 +38,7 @@ class Explosion extends FlxEmitterExt
 	}
 	
 	public function activate():Void {		
-		super.start(false, duration(), 0.01);
+		super.start(false, duration(), _frequency);
 	}
 	
 	public function addLightSource(particle:FlxParticle):Void {

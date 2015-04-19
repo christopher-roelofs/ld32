@@ -1,6 +1,4 @@
 package ld32;
-
-
 import flixel.effects.FlxSpriteFilter;
 import flixel.effects.particles.FlxEmitterExt;
 import flixel.effects.particles.FlxParticle;
@@ -11,19 +9,25 @@ import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxPoint;
 import flixel.util.FlxRandom;
 import openfl.filters.GlowFilter;
+import flash.filters.GradientGlowFilter;
+import flash.filters.BitmapFilterType;
 
 /**
  * ...
  * @author ...
  */
-class BottleRocketExplosion extends Explosion
+class DahliaExplosion extends Explosion
+
 {
-		private var _whitePixel:FlxParticle;
-	private var _glowFilter:GlowFilter;
+		private var _blackPixel:FlxParticle;
+	private var _glowFilterRed:GlowFilter;
+	private var _glowFilterBlue:GlowFilter;
+	private var _glowFilterGreen:GlowFilter;
+	//private var _glowFilterLight:GradientGlowFilter;
+	private var _glowFilterLight:GlowFilter;
 	private var _pixelFilter:FlxSpriteFilter;
-	private var _velocity:FlxPoint;
-	
-	public function new(X:Float=0, Y:Float=0, Size:Int=5) 
+
+	public function new(X:Float=0, Y:Float=0, Size:Int=10) 
 	{
 		Size = 20;
 		super(X, Y, Size);
@@ -31,22 +35,40 @@ class BottleRocketExplosion extends Explosion
 		rotation = new Bounds<Float>(0, 0);
 		setMotion(0, 400, duration(), 360, 0, 0);		
 		
-		_glowFilter = new GlowFilter(0xFF0022,0.25,16,16,10,1,false,false);
-	
+		_glowFilterRed = new GlowFilter(0xFF0022,0.75,16,16,10,1,false,false);
+		_glowFilterBlue = new GlowFilter(0x00FF22,0.75,16,16,10,1,false,false);
+		_glowFilterGreen = new GlowFilter(0x0022FF, 0.75, 16, 16, 10, 1, false, false);
+		_glowFilterLight = new GlowFilter(0xFFFFFF, 0.25, 16, 16, 10, 1, false, false);
+		/*
+		
+		var colors = [0xFFFFFF, 0xFFFFFF, 0x0000];
+		var alphas = [0.0,0.75, 0.25];
+		var ratios = [0, 32, 128];
+			
+		_glowFilterLight = new GradientGlowFilter(0, 0, colors, alphas, ratios, 32, 32, 20, 2, BitmapFilterType.FULL, false);
+		*/
+		var glowFilter:GlowFilter = _glowFilterRed;
 		for (i in 0...(Std.int(maxSize))) 
 		{
-			_whitePixel = new FlxParticle();
-			_whitePixel.makeGraphic(4, 4, 0xFFAAAAAA);
-			_whitePixel.visible = true; 
-			_pixelFilter = new FlxSpriteFilter(_whitePixel, 10, 10);
-			_whitePixel.width = 4;
-			_whitePixel.height = 4;
-			_pixelFilter.addFilter(_glowFilter, true);
-			add(_whitePixel);
+			_blackPixel = new FlxParticle();
+			switch (i % 3) {
+				case 0:
+					glowFilter = _glowFilterRed;
+				case 1:
+					glowFilter = _glowFilterBlue;
+				case 2:
+					glowFilter = _glowFilterGreen;										
+			}
+			_blackPixel.makeGraphic(4, 4, FlxColor.BLACK);
+			_blackPixel.visible = true; 
+			_pixelFilter = new FlxSpriteFilter(_blackPixel, 32, 32);
+			_blackPixel.width = 4;
+			_blackPixel.height = 4;
+			_pixelFilter.addFilter(glowFilter, true);
+			_pixelFilter.addFilter(_glowFilterLight, true);
+			add(_blackPixel);
 			
 		}		
-		
-		_frequency = 0.01;
 		
 	}
 	
@@ -57,12 +79,12 @@ class BottleRocketExplosion extends Explosion
 	
 		public override function destroy():Void
 	{
-		_whitePixel = FlxDestroyUtil.destroy(_whitePixel);
+		_blackPixel = FlxDestroyUtil.destroy(_blackPixel);
 		_pixelFilter.destroy();
 	}
 	
 	public override function duration():Float {
-		return 2;
+		return 4;
 	}
 	
 	
@@ -73,8 +95,7 @@ class BottleRocketExplosion extends Explosion
 
 	
 	public override function activate():Void {		
-		super.start(false, 0.1, _frequency);
-		_firework.launch(_player.direction);
+		super.start(true, duration());
 	}
 
 	private override function setParticleMotion(Particle:FlxParticle, Angle:Float, Distance:Float, AngleRange:Float = 0, DistanceRange:Float = 0):Void

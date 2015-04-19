@@ -39,6 +39,8 @@ class SparklerExplosion extends Explosion
 			_whitePixel.makeGraphic(4, 4, FlxColor.WHITE);
 			_whitePixel.visible = true; 
 			_pixelFilter = new FlxSpriteFilter(_whitePixel, 10, 10);
+			_whitePixel.width = 2;
+			_whitePixel.height = 2;
 			_pixelFilter.addFilter(_glowFilter, true);
 			add(_whitePixel);
 			

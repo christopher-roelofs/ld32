@@ -11,21 +11,22 @@ import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxPoint;
 import flixel.util.FlxRandom;
 import openfl.filters.GlowFilter;
+import flash.filters.GradientGlowFilter;
+import flash.filters.BitmapFilterType;
 
 /**
  * ...
  * @author ...
  */
-class BottleRocketExplosion extends Explosion
+class FirecrackerExplosion extends Explosion
 {
 		private var _whitePixel:FlxParticle;
 	private var _glowFilter:GlowFilter;
 	private var _pixelFilter:FlxSpriteFilter;
-	private var _velocity:FlxPoint;
-	
+
 	public function new(X:Float=0, Y:Float=0, Size:Int=5) 
 	{
-		Size = 20;
+		Size = 5;
 		super(X, Y, Size);
 		setAlpha(1, 1, 0, 0);
 		rotation = new Bounds<Float>(0, 0);
@@ -36,17 +37,15 @@ class BottleRocketExplosion extends Explosion
 		for (i in 0...(Std.int(maxSize))) 
 		{
 			_whitePixel = new FlxParticle();
-			_whitePixel.makeGraphic(4, 4, 0xFFAAAAAA);
+			_whitePixel.makeGraphic(2, 2, 0xFFAAAAAA);
 			_whitePixel.visible = true; 
 			_pixelFilter = new FlxSpriteFilter(_whitePixel, 10, 10);
-			_whitePixel.width = 4;
-			_whitePixel.height = 4;
+			_whitePixel.width = 2;
+			_whitePixel.height = 2;
 			_pixelFilter.addFilter(_glowFilter, true);
 			add(_whitePixel);
 			
 		}		
-		
-		_frequency = 0.01;
 		
 	}
 	
@@ -62,19 +61,18 @@ class BottleRocketExplosion extends Explosion
 	}
 	
 	public override function duration():Float {
-		return 2;
+		return 1;
 	}
 	
 	
 	public override function lightSourceRadius():Float {
-		return 15;
+		return 10;
 	}
 	
 
 	
 	public override function activate():Void {		
-		super.start(false, 0.1, _frequency);
-		_firework.launch(_player.direction);
+		super.start(true, duration());
 	}
 
 	private override function setParticleMotion(Particle:FlxParticle, Angle:Float, Distance:Float, AngleRange:Float = 0, DistanceRange:Float = 0):Void
@@ -227,7 +225,7 @@ class BottleRocketExplosion extends Explosion
 			particle.angle = FlxRandom.float() * 360 - 180;
 		}
 		particle.drag.set(40, 40);
-		particle.elasticity = 0.1;
+		particle.elasticity = 0;
 		particle.onEmit();
 	}
 }	

@@ -4,17 +4,17 @@ package ld32;
  * ...
  * @author ...
  */
-class Sparkler extends Firework
+class Dahlia extends Firework
 {
 
 	public function new(playState:PlayState, player:Player) 
-	{
-		super(0, playState, player, new SparklerExplosion(player.x, player.y, 0));
-		
+	{	
+		var explosion = new DahliaExplosion(player.x, player.y, 0);		
+		super(3, playState, player, explosion);		
 	}
 	
 	public override function getTypeId():Int {
-		return 1;
+		return 4;
 	}
 	
 }
