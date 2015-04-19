@@ -37,6 +37,7 @@ class PlayState extends FlxState
 	private var _grpCoins:FlxTypedGroup<Coin>;
 	private var _grpContainers:FlxTypedGroup<Container>;
 	private var _grpEnemies:FlxTypedGroup<Enemy>;
+	private var _grpExit:FlxTypedGroup<Exit>;
 	public var _hud:HUD;
 	private var _money:Int = 0;	
 	private var _inCombat:Bool = false;	
@@ -71,7 +72,7 @@ class PlayState extends FlxState
 		FlxG.mouse.visible = false;
 		#end
 		
-		_map = new FlxOgmoLoader(AssetPaths.room_001__oel);
+		_map = new FlxOgmoLoader(AssetPaths.room_002__oel);
 		_mWalls = _map.loadTilemap(AssetPaths.tiles__png, 16, 16, "walls");
 		_mWalls.setTileProperties(1, FlxObject.NONE);
 		_mWalls.setTileProperties(2, FlxObject.ANY);
@@ -85,6 +86,9 @@ class PlayState extends FlxState
 		
 		_grpEnemies = new FlxTypedGroup<Enemy>();
 		add(_grpEnemies);
+		
+		_grpExit = new FlxTypedGroup<Exit>();
+		add(_grpExit);
 		
 		_player = new Player();
 		
@@ -167,11 +171,6 @@ class PlayState extends FlxState
 			//_sparkler = new Sparkler(x, y);
 			//_sparkler.init();
 		}
-		else if (entityName == "coin")
-		{
-			_grpCoins.add(new Coin(x + 4, y + 4));
-			
-		}
 		else if (entityName == "container")
 		{
 			_grpContainers.add(new Container(x + 4, y + 4));
@@ -180,6 +179,11 @@ class PlayState extends FlxState
 		else if (entityName == "enemy")
 		{
 			_grpEnemies.add(new Enemy(x + 4, y, Std.parseInt(entityData.get("etype"))));
+		}
+		else if (entityName == "exit")
+		{
+			_grpExit.add(new Exit(x,y));
+			
 		}
 	}
 	
@@ -223,6 +227,7 @@ class PlayState extends FlxState
 		{
 			FlxG.collide(_player, _mWalls);
 			FlxG.overlap(_player, _grpContainers, playerTouchContainer);
+			FlxG.overlap(_player, _grpExit, playerTouchExit);
 			FlxG.collide(_grpEnemies, _mWalls);
 			_grpEnemies.forEachAlive(checkEnemyVision);
 			FlxG.overlap(_player, _grpEnemies, playerTouchEnemy);
@@ -274,15 +279,23 @@ private function enemyCoolDown(timer:FlxTimer):Void
 	 
  }
  
- private function playerTouchEnemy(P:Player, E:Enemy):Void
+	private function playerTouchEnemy(P:Player, E:Enemy):Void
  {
   if (_coolDown == false)
   {
-   P.addHealth( -1);
-   _coolDown = true;
-   _enemyTouchCooldownTimer = new FlxTimer(1, enemyCoolDown, 1);
+	  if (P.health < 0)
+	  {
+		 FlxG.switchState(new GameOverState(false, 0)); 
+	  }
+	  else
+	  {
+		 P.addHealth( -1);
+		_coolDown = true;
+		_enemyTouchCooldownTimer = new FlxTimer(1, enemyCoolDown, 1);
+	  }
+   
   }
- }
+  }
 	
 	private function checkEnemyVision(e:Enemy):Void
 	{
@@ -295,15 +308,23 @@ private function enemyCoolDown(timer:FlxTimer):Void
 			e.seesPlayer = false;		
 	}
 	
-
-	
-	private function playerTouchContainer(P:Player, C:Container):Void
+private function playerTouchContainer(P:Player, C:Container):Void
 	{
 		if (P.alive && P.exists && C.alive && C.exists)
 		{
-			P.updateFwInventory(FlxRandom.intRanged(1, 5));
+			P.updateFwInventory(FlxRandom.intRanged(1, 4));
 			C.kill();
 			
+		}
+	}
+	
+
+	
+	private function playerTouchExit(P:Player, E:Exit):Void
+	{
+		if (P.alive && P.exists && E.alive && E.exists)
+		{
+			FlxG.switchState(new GameOverState(true, 9001));
 		}
 	}
 }
