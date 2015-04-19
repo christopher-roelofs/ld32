@@ -9,8 +9,10 @@ import flixel.util.FlxAngle;
 import flixel.util.FlxColor;
 import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxPoint;
+import flixel.util.FlxTimer;
 import haxe.Log;
 import ld32.Candle;
+import ld32.Sparkler;
 
 class Player extends FlxSprite
 {
@@ -23,15 +25,30 @@ class Player extends FlxSprite
 	private var _fw3:Int = 0;
 	private var _fw4:Int = 0;
 	private var _candle:Candle;
-	
+	private var _sparkler:Sparkler;	
+	private var _sparklerTimer:FlxTimer;
 	
 	private var _playState:PlayState;
 	
+		public function usingSparkler():Bool {
+		return _sparkler.on;
+	}
 	
 	public function addToPlayState(playState:PlayState) {
 		_playState = playState;
 		_playState.add(this);
 		_playState.add(_candle);
+		_playState.add(_sparkler);		
+		_sparkler.init();		
+		_sparkler.visible = false;
+		_sparkler.on = false;
+		_playState.setLumosity(0.5 + (health / 6.0));
+	}
+	
+		public function stopSparkler(Timer:FlxTimer):Void {
+		_sparkler.on = false;
+		_sparkler.visible = false;
+		_playState.setLumosity(0.5 + (health / 6.0));
 	}
 	
 	public function updateFwInventory(fw:Int)
@@ -78,9 +95,11 @@ class Player extends FlxSprite
 		
 		_sndStep = FlxG.sound.load(AssetPaths.step__wav);
 		
-		_lumosity = 3;
+		health = 3;
 		
 		_candle = new Candle();
+		_sparkler = new Sparkler();
+		_sparklerTimer = new FlxTimer();
 		
 	}
 	
@@ -92,12 +111,15 @@ class Player extends FlxSprite
 		var _right:Bool = false;
 		var _togglefw1 = false;
 		
+				var useItem = false;
+		
 		#if !FLX_NO_KEYBOARD
 		_up = FlxG.keys.anyPressed(["UP", "W"]);
 		_down = FlxG.keys.anyPressed(["DOWN", "S"]);
 		_left = FlxG.keys.anyPressed(["LEFT", "A"]);
 		_right = FlxG.keys.anyPressed(["RIGHT", "D"]);
 		_togglefw1 = FlxG.keys.anyPressed(["ONE"]);
+				useItem = FlxG.keys.anyJustPressed(["SPACE"]);	
 		#end
 		#if mobile
 		_up = _up || PlayState.virtualPad.buttonUp.status == FlxButton.PRESSED;
@@ -105,6 +127,13 @@ class Player extends FlxSprite
 		_left  = _left || PlayState.virtualPad.buttonLeft.status == FlxButton.PRESSED;
 		_right = _right || PlayState.virtualPad.buttonRight.status == FlxButton.PRESSED;
 		#end
+		
+				if (useItem && !_sparkler.on) {						
+			_sparkler.on = true;
+			_sparkler.visible = true;
+			_sparklerTimer.start(5, stopSparkler, 1);
+			_playState.setLumosity(2);					
+		}
 		
 		if (_up && _down)
 			_up = _down = false;
@@ -177,7 +206,12 @@ class Player extends FlxSprite
 		super.update();
 		_candle.updatePosition(x, y);
 		
-		_playState.addLightSource(getGraphicMidpoint().subtractPoint(offset), 30);
+		if(_sparkler.on) {
+			_sparkler.at(this);
+			_playState.addLightSource(getGraphicMidpoint().subtractPoint(offset), 50);
+		} else {
+			_playState.addLightSource(getGraphicMidpoint().subtractPoint(offset), 30);
+		}
 	}
 	
 	override public function destroy():Void 

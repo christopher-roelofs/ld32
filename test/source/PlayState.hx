@@ -35,8 +35,7 @@ class PlayState extends FlxState
 	private var _grpContainers:FlxTypedGroup<Container>;
 	private var _grpEnemies:FlxTypedGroup<Enemy>;
 	public var _hud:HUD;
-	private var _money:Int = 0;
-	private var _health:Int = 3;
+	private var _money:Int = 0;	
 	private var _inCombat:Bool = false;
 	private var _combatHud:CombatHUD;
 	private var _ending:Bool;
@@ -106,7 +105,7 @@ class PlayState extends FlxState
 		
 		
 		_darkFilter = new ColorMatrixFilter([0.5,0,0,0,0, 0,1,0,0,0, 0,0,1,0,0, 0,0,0,0.25,0]);	
-		_lightFilter = new ColorMatrixFilter([1,0,0,0,0, 0,1,0,0,0, 0,0,0.75,0,0, 0,0,0,1,0]);	
+		//_lightFilter = new ColorMatrixFilter([1,0,0,0,0, 0,1,0,0,0, 0,0,0.75,0,0, 0,0,0,1,0]);	
 		
 		_nonHudRect = new Rectangle(0, 20, FlxG.camera.width, FlxG.camera.height - 20);
 		_nonHudPoint = new Point(0, 20);
@@ -124,6 +123,11 @@ class PlayState extends FlxState
 
 		super.create();	
 		
+	}
+	
+		public function setLumosity(lumosity:Float) {
+		_lightFilter = new ColorMatrixFilter([1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, lumosity, 0]);
+
 	}
 	
 	public function addLightSource(point:FlxPoint, radius:Float):Void
@@ -199,7 +203,6 @@ class PlayState extends FlxState
 		if (!_inCombat)
 		{
 			FlxG.collide(_player, _mWalls);
-			FlxG.overlap(_player, _grpCoins, playerTouchCoin);
 			FlxG.overlap(_player, _grpContainers, playerTouchContainer);
 			FlxG.collide(_grpEnemies, _mWalls);
 			_grpEnemies.forEachAlive(checkEnemyVision);
@@ -238,21 +241,7 @@ class PlayState extends FlxState
 	
 	private function playerTouchEnemy(P:Player, E:Enemy):Void
 	{
-		if (P.alive && P.exists && E.alive && E.exists && !E.isFlickering())
-		{
-			startCombat(E);
-		}
-	}
-	
-	private function startCombat(E:Enemy):Void
-	{
-		_inCombat = true;
-		_player.active = false;
-		_grpEnemies.active = false;
-		_combatHud.initCombat(_health, E);
-		#if mobile
-		virtualPad.visible = false;
-		#end
+
 	}
 	
 	private function checkEnemyVision(e:Enemy):Void
@@ -266,16 +255,7 @@ class PlayState extends FlxState
 			e.seesPlayer = false;		
 	}
 	
-	private function playerTouchCoin(P:Player, C:Coin):Void
-	{
-		if (P.alive && P.exists && C.alive && C.exists)
-		{
-			_sndCoin.play(true);
-			_money++;
-			_hud.updateHUD(_health, _money);
-			C.kill();
-		}
-	}
+
 	
 	private function playerTouchContainer(P:Player, C:Container):Void
 	{
