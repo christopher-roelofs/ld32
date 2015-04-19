@@ -24,14 +24,6 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		super();
 		_sprBack = new FlxSprite().makeGraphic(FlxG.width, 20, FlxColor.BLACK);
 		_sprBack.drawRect(0, 19, FlxG.width, 1, FlxColor.WHITE);
-		_txtHealth = new FlxText(16, 2, 0, "3 / 3", 8);
-		_txtHealth.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
-		_txtMoney = new FlxText(0, 2, 0, "0", 8);
-		_txtMoney.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
-		_sprHealth = new FlxSprite(4, _txtHealth.y + (_txtHealth.height/2)  - 4, AssetPaths.health__png);
-		_sprMoney = new FlxSprite(FlxG.width - 12, _txtMoney.y + (_txtMoney.height/2)  - 4, AssetPaths.coin__png);
-		_txtMoney.alignment = "right";
-		_txtMoney.x = _sprMoney.x - _txtMoney.width - 4;
 		
 		_firework1 = new FlxText(60, 2, 0, "Firework1 x 0", 8);
 		_firework1.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);

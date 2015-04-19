@@ -38,7 +38,6 @@ class PlayState extends FlxState
 	private var _money:Int = 0;
 	private var _health:Int = 3;
 	private var _inCombat:Bool = false;
-	private var _combatHud:CombatHUD;
 	private var _ending:Bool;
 	private var _won:Bool;
 	private var _paused:Bool;
@@ -173,7 +172,6 @@ class PlayState extends FlxState
 		_grpEnemies = FlxDestroyUtil.destroy(_grpEnemies);
 		_grpContainers = FlxDestroyUtil.destroy(_grpContainers);
 		_hud = FlxDestroyUtil.destroy(_hud);
-		_combatHud = FlxDestroyUtil.destroy(_combatHud);
 		_sndCoin = FlxDestroyUtil.destroy(_sndCoin);
 		#if mobile
 		virtualPad = FlxDestroyUtil.destroy(virtualPad);
@@ -199,7 +197,6 @@ class PlayState extends FlxState
 		if (!_inCombat)
 		{
 			FlxG.collide(_player, _mWalls);
-			FlxG.overlap(_player, _grpCoins, playerTouchCoin);
 			FlxG.overlap(_player, _grpContainers, playerTouchContainer);
 			FlxG.collide(_grpEnemies, _mWalls);
 			_grpEnemies.forEachAlive(checkEnemyVision);
@@ -240,7 +237,7 @@ class PlayState extends FlxState
 	{
 		if (P.alive && P.exists && E.alive && E.exists && !E.isFlickering())
 		{
-			startCombat(E);
+			//enemy interaction goes here
 		}
 	}
 	
@@ -249,7 +246,6 @@ class PlayState extends FlxState
 		_inCombat = true;
 		_player.active = false;
 		_grpEnemies.active = false;
-		_combatHud.initCombat(_health, E);
 		#if mobile
 		virtualPad.visible = false;
 		#end
@@ -266,16 +262,6 @@ class PlayState extends FlxState
 			e.seesPlayer = false;		
 	}
 	
-	private function playerTouchCoin(P:Player, C:Coin):Void
-	{
-		if (P.alive && P.exists && C.alive && C.exists)
-		{
-			_sndCoin.play(true);
-			_money++;
-			_hud.updateHUD(_health, _money);
-			C.kill();
-		}
-	}
 	
 	private function playerTouchContainer(P:Player, C:Container):Void
 	{
