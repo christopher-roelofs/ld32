@@ -10,6 +10,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxPoint;
 import flixel.util.FlxTimer;
+import flixel.util.FlxRandom;
 import haxe.Log;
 import ld32.BottleRocket;
 import ld32.Candle;
@@ -30,6 +31,9 @@ class Player extends FlxSprite
 	private var _fw4:Int = 0;
 	private var _matches:Int = 0;
 	private var _candle:Candle;
+	private var _kills:Int = 0;
+	private var _boxesCollected:Int = 0;
+	private var _usedMatches:Int = 0;
 	private var _sparklerTimer:FlxTimer;
 	private var _holdingFirework:Firework;
 	public var currentFireworkType:Int;
@@ -48,6 +52,34 @@ class Player extends FlxSprite
 		updateLumosityForHealth();
 	}
 	
+	public function updateBoxesCollectedCount():Void
+	{
+		_boxesCollected++;
+	}
+	
+	
+	public function updateKillsCount():Void
+	{
+			_kills++;
+	}
+	
+	public function getKillCount()
+	{
+		return _kills;
+	}
+	
+	public function getBoxesCollected()
+	{
+		return _boxesCollected;
+	}
+	
+	public function getUsedMatchesCount()
+	{
+		return _usedMatches;
+	}
+	
+
+	
 	public function addHealth(hp:Int) {
 		health += hp;
 		if (health == -1) {
@@ -57,6 +89,7 @@ class Player extends FlxSprite
 		if (health <= 0) {
 			if (_matches > 0) {
 				_matches--;
+				_usedMatches++;
 				_playState._hud.updateHUD(_matches);
 				health = 3;
 			}
@@ -89,7 +122,9 @@ class Player extends FlxSprite
 		else if(fw == 4)
 		{
 			_fw4+=count;
-		} else {
+		}
+		else
+ {
 			if (health == 0) {
 				setHealth(3);
 			} else {
@@ -100,6 +135,40 @@ class Player extends FlxSprite
 		}
 		
 		_playState._hud.updateFwHUD(_fw1, _fw2, _fw3, _fw4);
+		
+		
+	}
+	
+	public function randomFireworks():Void
+	{
+		var cherosiphon:Bool = FlxRandom.chanceRoll(100);
+		var sultiBomb:Bool =  FlxRandom.chanceRoll(15);
+		var bangFai:Bool =  FlxRandom.chanceRoll(30);
+		var dahlia:Bool =  FlxRandom.chanceRoll(10);
+		var match:Bool = FlxRandom.chanceRoll(35);
+		
+		if (cherosiphon)
+		{
+			_fw1++;
+		}
+		if (sultiBomb)
+		{
+			_fw2++;
+		}
+		if (bangFai)
+		{
+			_fw1++;
+		}
+		if (dahlia)
+		{
+			_fw1++;
+		}
+		if (match)
+		{
+			
+		}
+		
+		
 		
 		
 	}
@@ -134,6 +203,8 @@ class Player extends FlxSprite
 		currentFireworkType = fireworkType;
 		_playState._hud.toggleFw(fireworkType);
 	}
+	
+	
 	
 	private function movement():Void
 	{

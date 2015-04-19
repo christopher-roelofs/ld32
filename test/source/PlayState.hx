@@ -173,7 +173,7 @@ class PlayState extends FlxState
 		}
 		else if (entityName == "container")
 		{
-			_grpContainers.add(new Container(x + 4, y + 4));
+			_grpContainers.add(new Container(x, y));
 			
 		}
 		else if (entityName == "enemy")
@@ -271,7 +271,7 @@ class PlayState extends FlxState
 	
 	private function doneFadeOut():Void 
 	{
-		FlxG.switchState(new GameOverState(_won, _money));
+		FlxG.switchState(new GameOverState(_won,_player));
 	}
 	
 	
@@ -282,26 +282,20 @@ private function enemyCoolDown(timer:FlxTimer):Void
  
  
  public function goToGameOver():Void {
-	FlxG.switchState(new GameOverState(false, -1));
+	FlxG.switchState(new GameOverState(false,_player));
  }
  
 	private function playerTouchEnemy(P:Player, E:Enemy):Void
  {
   if (_coolDown == false)
-  {
-	  if (P.health < 0)
-	  {
-		 FlxG.switchState(new GameOverState(false, 0)); 
-	  }
-	  else
-	  {
+	{
 		 P.addHealth( -1);
 		_coolDown = true;
 		_enemyTouchCooldownTimer = new FlxTimer(1, enemyCoolDown, 1);
 	  }
    
   }
-  }
+ 
 	
 	private function checkEnemyVision(e:Enemy):Void
 	{
@@ -318,6 +312,7 @@ private function playerTouchContainer(P:Player, C:Container):Void
 	{
 		if (P.alive && P.exists && C.alive && C.exists)
 		{
+			P.updateBoxesCollectedCount();
 			P.updateFwInventory(FlxRandom.intRanged(1, 5), FlxRandom.intRanged(1,5));
 			C.kill();
 			
@@ -330,7 +325,7 @@ private function playerTouchContainer(P:Player, C:Container):Void
 	{
 		if (P.alive && P.exists && E.alive && E.exists)
 		{
-			FlxG.switchState(new GameOverState(true, 9001));
+			FlxG.switchState(new GameOverState(true,_player));
 		}
 	}
 }

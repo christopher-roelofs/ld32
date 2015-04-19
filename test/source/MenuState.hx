@@ -18,6 +18,7 @@ using flixel.util.FlxSpriteUtil;
 class MenuState extends FlxState
 {
 	private var _txtTitle:FlxText;
+	private var _txtContols:FlxText;
 	private var _btnOptions:FlxButton;
 	private var _btnPlay:FlxButton;
 	private var _btnHints:FlxButton;
@@ -44,24 +45,30 @@ class MenuState extends FlxState
 		_txtTitle.screenCenter(true, false);
 		add(_txtTitle);
 		
+		_txtContols = new FlxText(0, 90, 0, "Controls\n\n Movement : W,A,S,D / Up,Dwn,Lft,Rght\nToggle Fireworks : 1-4\nFire Fireworks : Space / F", 19);
+		_txtContols.alignment = "center";
+		_txtContols.screenCenter(true, false);
+		add(_txtContols);
+		
+		
+		
 		_btnPlay = new FlxButton(0, 0, "Play", clickPlay);
-		_btnPlay.x = (FlxG.width / 2) - _btnPlay.width - 10;
+		_btnPlay.x = (FlxG.width /2) - _btnPlay.width - 10;
 		_btnPlay.y = FlxG.height - _btnPlay.height - 10;
 		_btnPlay.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(_btnPlay);
-		/*
-		_btnHints = new FlxButton(0, 0, "Hints", clickHints);
-		_btnHints.x = (FlxG.width / 3) - _btnHints.width - 10;
-		_btnHints.y = FlxG.height - _btnHints.height - 10;
-		_btnHints.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
-		add(_btnHints);
 		
-		*/
 		_btnOptions = new FlxButton(0, 0, "Options", clickOptions);
 		_btnOptions.x = (FlxG.width / 2) + 10;
 		_btnOptions.y = FlxG.height - _btnOptions.height - 10;
 		_btnOptions.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(_btnOptions);
+		
+		_btnHints = new FlxButton(0, 0, "Hints", clickHints);
+		_btnHints.x = (FlxG.width / 2) + 100 ;
+		_btnHints.y = FlxG.height - _btnHints.height - 10;
+		_btnHints.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
+		add(_btnHints);
 		
 		#if desktop
 		_btnExit = new FlxButton(FlxG.width - 28, 8, "X", clickExit);
@@ -92,7 +99,7 @@ class MenuState extends FlxState
 	private function clickHints():Void
 	{
 		FlxG.camera.fade(FlxColor.BLACK,.33, false, function() {
-			FlxG.switchState(new PlayState());
+			FlxG.switchState(new HintsState());
 		});
 	}
 	
