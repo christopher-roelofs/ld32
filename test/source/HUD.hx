@@ -23,32 +23,44 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		_sprBack = new FlxSprite().makeGraphic(FlxG.width, 20, FlxColor.BLACK);
 		_sprBack.drawRect(0, 19, FlxG.width, 1, FlxColor.WHITE);
 		
-		_firework1 = new FlxText(60, 2, 0, "Cherosiphon x 0", 8);
+		_firework1 = new FlxText(90, 2, 0, "Cherosiphon x 0", 8);
 		_firework1.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
-		
-		_firework2 = new FlxText(180, 2, 0, "Sulti Bomb x 0", 8);
+		_firework1.alpha = getNewAlpha(0);
+		_firework2 = new FlxText(205, 2, 0, "Sulti Bomb x 0", 8);
 		_firework2.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
-		
-		_firework3 = new FlxText(300, 2, 0, "Bang Fai x 0", 8);
+		_firework2.alpha = getNewAlpha(0);
+		_firework3 = new FlxText(320, 2, 0, "Bang Fai x 0", 8);
 		_firework3.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
-		
-		_firework4 = new FlxText(420, 2, 0, "Dahlia x 0", 8);
+		_firework3.alpha = getNewAlpha(0);
+		_firework4 = new FlxText(440, 2, 0, "Dahlia x 0", 8);
 		_firework4.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
+		_firework4.alpha = getNewAlpha(0);
 		add(_sprBack);
 		add(_firework1);
 		add(_firework2);
 		add(_firework3);
 		add(_firework4);
 		
+		_txtHealth = new FlxText(0, 2, 0, "Matches x 0", 8);
+		_txtHealth.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.RED, 1, 1);
+		_txtHealth.alpha = getNewAlpha(0);
+		add(_txtHealth);
 		
 		forEach(function(spr:FlxSprite) {
 			spr.scrollFactor.set();
 		});
 	}
 	
-	public function updateHUD(Health:Int = 0, Money:Int = 0):Void
+	public function updateHUD(matches:Int):Void
 	{
-		_txtHealth.text = Std.string(Health) + " / 3";
+		_txtHealth.text = "Matches x " + Std.string(matches);
+		_txtHealth.alpha = getNewAlpha(matches);
+	}
+	
+	
+	private function getNewAlpha(count:Int):Float {
+		var newAlpha = 0.25 + 0.25 * count;
+		return (newAlpha > 1) ? 1 : newAlpha;
 		
 	}
 	
@@ -58,6 +70,10 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		_firework2.text = "Sulti Bomb x " + Std.string(fw2);
 		_firework3.text = "Bang Fai x " + Std.string(fw3); 
 		_firework4.text = "Dahlia x " + Std.string(fw4);
+		_firework1.alpha = getNewAlpha(fw1);
+		_firework2.alpha = getNewAlpha(fw2);
+		_firework3.alpha = getNewAlpha(fw3);
+		_firework4.alpha = getNewAlpha(fw4);
 		
 	}
 	

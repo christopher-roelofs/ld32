@@ -231,7 +231,7 @@ class PlayState extends FlxState
 		for (i in 0..._fireworks.length) {
 			_fireworks[i].update();
 			if(_fireworks[i].shouldCollide()) {
-				FlxG.collide(_fireworks[i].explosion, _mWalls);
+				FlxG.collide(_fireworks[i].explosion, _mWalls, _fireworks[i].wallCollision);
 			}
 		}
 		
@@ -269,15 +269,20 @@ private function enemyCoolDown(timer:FlxTimer):Void
   _coolDown = false;
  }
  
+ 
+ public function goToGameOver():Void {
+	 
+ }
+ 
  private function playerTouchEnemy(P:Player, E:Enemy):Void
  {
   if (_coolDown == false)
   {
-   P.addHealth( -2);
+   P.addHealth( -1);
    _coolDown = true;
    _enemyTouchCooldownTimer = new FlxTimer(1, enemyCoolDown, 1);
- 
   }
+ }
 	
 	private function checkEnemyVision(e:Enemy):Void
 	{
@@ -296,7 +301,7 @@ private function enemyCoolDown(timer:FlxTimer):Void
 	{
 		if (P.alive && P.exists && C.alive && C.exists)
 		{
-			P.updateFwInventory(FlxRandom.intRanged(1, 4));
+			P.updateFwInventory(FlxRandom.intRanged(1, 5));
 			C.kill();
 			
 		}

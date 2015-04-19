@@ -13,6 +13,8 @@ import flixel.util.FlxTimer;
 import haxe.Log;
 import ld32.BottleRocket;
 import ld32.Candle;
+import ld32.Dahlia;
+import ld32.Firecracker;
 import ld32.Firework;
 import ld32.Sparkler;
 
@@ -26,11 +28,13 @@ class Player extends FlxSprite
 	private var _fw2:Int = 0;
 	private var _fw3:Int = 0;
 	private var _fw4:Int = 0;
+	private var _matches:Int = 0;
 	private var _candle:Candle;
 	private var _sparklerTimer:FlxTimer;
 	private var _holdingFirework:Firework;
 	public var currentFireworkType:Int;
 	private var _playState:PlayState;
+	public var direction:Float;
 	
 	public function addToPlayState(playState:PlayState) {
 		_playState = playState;
@@ -46,15 +50,29 @@ class Player extends FlxSprite
 	
 	public function addHealth(hp:Int) {
 		health += hp;
+		if (health == -1) {
+			_playState.goToGameOver();
+			health = 0;
+		}
+		if (health <= 0) {
+			if (_matches > 0) {
+				_matches--;
+				_playState._hud.updateHUD(_matches);
+				health = 3;
+			}
+		}
 		updateLumosityForHealth();
 	}
 
 	private function updateLumosityForHealth() {
-		_playState.setLumosity(0.5 + (health / 6.0));
+		_candle.visible = (health > 0);
+		_playState.setLumosity(health / 3.0);
 	}
 	
 	public function updateFwInventory(fw:Int)
 	{
+
+		
 		if (fw == 1)
 		{
 			_fw1 ++;
@@ -68,9 +86,17 @@ class Player extends FlxSprite
 		{
 			_fw3 ++;
 		}
-		else
+		else if(fw == 4)
 		{
 			_fw4 ++;
+		} else {
+			if (health == 0) {
+				setHealth(3);
+			} else {
+				_matches++;
+				_playState._hud.updateHUD(_matches);
+			}
+			
 		}
 		
 		_playState._hud.updateFwHUD(_fw1, _fw2, _fw3, _fw4);
@@ -101,7 +127,7 @@ class Player extends FlxSprite
 		_candle = new Candle();
 		
 		currentFireworkType = 0;
-		
+		direction = 0;
 	}
 	
 	public function setCurrentFireworkType(fireworkType:Int):Void {
@@ -154,19 +180,33 @@ class Player extends FlxSprite
 		}
 		
 		if (useItem) {	
-			if (_holdingFirework == null) {
+			if (health > 0 && _holdingFirework == null) {
 				switch(currentFireworkType) {
 					case 1:
 						_holdingFirework = new Sparkler(_playState, this);
 						_playState.addFirework(_holdingFirework);
+					case 2:
+						_holdingFirework = new Firecracker(_playState, this);
+						_playState.addFirework(_holdingFirework);
 					case 3:
 						_holdingFirework = new BottleRocket(_playState, this);
+						_playState.addFirework(_holdingFirework);
+					case 4:
+						_holdingFirework = new Dahlia(_playState, this);
 						_playState.addFirework(_holdingFirework);
 					default:					
 				}
 				
-			} else {
-				_holdingFirework = null;
+			} else if (_holdingFirework != null) {
+				_holdingFirework.launch(facing);
+				switch(_holdingFirework.getTypeId()) {
+					case 1:						
+						_holdingFirework = null;
+					case 2:
+						_holdingFirework = null;
+					case 4:
+						_holdingFirework = null;						
+				}
 			}
 		}
 		
@@ -177,6 +217,7 @@ class Player extends FlxSprite
 		
 		if ( _up || _down || _left || _right)
 		{
+			facing = 0;
 			var mA:Float = 0;
 			if (_up)
 			{
@@ -201,13 +242,14 @@ class Player extends FlxSprite
 			else if (_left)
 			{
 				mA = 180;
-				facing = FlxObject.LEFT;
+				facing = facing | FlxObject.LEFT;
 			}
 			else if (_right)
 			{
 				mA = 0;
-				facing = FlxObject.RIGHT;
+				facing = facing | FlxObject.RIGHT;
 			}
+			direction = mA;
 			FlxAngle.rotatePoint(speed, 0, 0, 0, mA, velocity);
 		}
 		
@@ -220,16 +262,12 @@ class Player extends FlxSprite
 		{
 			_sndStep.play();
 			
-			switch(facing)
-			{
-				case FlxObject.LEFT, FlxObject.RIGHT:
-					animation.play("lr");
-					
-				case FlxObject.UP:
-					animation.play("u");
-					
-				case FlxObject.DOWN:
-					animation.play("d");
+			if((facing & (FlxObject.LEFT | FlxObject.RIGHT)) != 0) {
+				animation.play("lr");
+			} else if((facing & FlxObject.UP) != 0) {				
+				animation.play("u");					
+			} else if((facing & FlxObject.DOWN) != 0) {
+				animation.play("d");
 			}
 		}
 		
@@ -243,8 +281,12 @@ class Player extends FlxSprite
 		
 		
 		_playState.addLightSource(getGraphicMidpoint().subtractPoint(offset), 30);
-		if (_holdingFirework != null && !_holdingFirework.isDone) {			
-			_holdingFirework.setPosition(this.getGraphicMidpoint());
+		if (_holdingFirework != null && !_holdingFirework.isDone) {	
+			if (_holdingFirework.isFuseExpired && _holdingFirework.getTypeId() == 3) {
+				_holdingFirework = null;
+			} else {
+				_holdingFirework.setPosition(this.getGraphicMidpoint());
+			}
 		} else if (_holdingFirework != null && _holdingFirework.isDone) {
 			_holdingFirework = null;
 		}

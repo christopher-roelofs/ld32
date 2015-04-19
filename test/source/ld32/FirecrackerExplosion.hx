@@ -37,7 +37,7 @@ class FirecrackerExplosion extends Explosion
 		for (i in 0...(Std.int(maxSize))) 
 		{
 			_whitePixel = new FlxParticle();
-			_whitePixel.makeGraphic(2, 2, 0xFFAAAAAA);
+			_whitePixel.makeGraphic(2, 2, 0xFF2222AA);
 			_whitePixel.visible = true; 
 			_pixelFilter = new FlxSpriteFilter(_whitePixel, 10, 10);
 			_whitePixel.width = 2;

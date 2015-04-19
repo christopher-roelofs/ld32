@@ -38,7 +38,7 @@ class MenuState extends FlxState
 			#end
 		}
 		
-		_txtTitle = new FlxText(0, 20, 0, "HaxeFlixel\nTutorial\nGame", 22);
+		_txtTitle = new FlxText(0, 20, 0, "B r i m s t o n e", 22);
 		_txtTitle.alignment = "center";
 		_txtTitle.screenCenter(true, false);
 		add(_txtTitle);
