@@ -11,7 +11,9 @@ import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxPoint;
 import flixel.util.FlxTimer;
 import haxe.Log;
+import ld32.BottleRocket;
 import ld32.Candle;
+import ld32.Firework;
 import ld32.Sparkler;
 
 class Player extends FlxSprite
@@ -27,10 +29,11 @@ class Player extends FlxSprite
 	private var _candle:Candle;
 	private var _sparkler:Sparkler;	
 	private var _sparklerTimer:FlxTimer;
+	private var _holdingFirework:Firework;
 	
 	private var _playState:PlayState;
 	
-		public function usingSparkler():Bool {
+	public function usingSparkler():Bool {
 		return _sparkler.on;
 	}
 	
@@ -45,7 +48,7 @@ class Player extends FlxSprite
 		updateLumosityForHealth();
 	}
 	
-		public function stopSparkler(Timer:FlxTimer):Void {
+	public function stopSparkler(Timer:FlxTimer):Void {
 		_sparkler.on = false;
 		_sparkler.visible = false;
 		updateLumosityForHealth();
@@ -142,11 +145,23 @@ class Player extends FlxSprite
 		_right = _right || PlayState.virtualPad.buttonRight.status == FlxButton.PRESSED;
 		#end
 		
+		/*
 				if (useItem && !_sparkler.on) {						
 			_sparkler.on = true;
 			_sparkler.visible = true;
 			_sparklerTimer.start(5, stopSparkler, 1);
 			_playState.setLumosity(2);					
+		}
+		
+		*/
+		
+		if (useItem) {	
+			if (_holdingFirework == null) {
+				_holdingFirework = new BottleRocket(_playState, this);
+				_playState.addFirework(_holdingFirework);
+			} else {
+				_holdingFirework = null;
+			}
 		}
 		
 		if (_up && _down)
@@ -225,6 +240,11 @@ class Player extends FlxSprite
 			_playState.addLightSource(getGraphicMidpoint().subtractPoint(offset), 50);
 		} else {
 			_playState.addLightSource(getGraphicMidpoint().subtractPoint(offset), 30);
+		}
+		if (_holdingFirework != null && !_holdingFirework.isDone) {			
+			_holdingFirework.setPosition(this.getGraphicMidpoint());
+		} else if (_holdingFirework != null && _holdingFirework.isDone) {
+			_holdingFirework = null;
 		}
 	}
 	

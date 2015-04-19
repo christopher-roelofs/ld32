@@ -21,6 +21,7 @@ import openfl.display.BitmapData;
 using flixel.util.FlxSpriteUtil;
 import flash.geom.Point;
 import ld32.Sparkler;
+import ld32.Firework;
 
 /**
  * A FlxState which can be used for the actual gameplay.
@@ -50,6 +51,8 @@ class PlayState extends FlxState
 	private var _darkMask:FlxSprite;
 	private var _nonHudRect:Rectangle;
 	private var _nonHudPoint:Point;
+	
+	private var _fireworks:Array<Firework>;
 	
 	#if mobile
 	public static var virtualPad:FlxVirtualPad;
@@ -120,6 +123,8 @@ class PlayState extends FlxState
 		_darkBuffer.pixels = new BitmapData(FlxG.camera.width, FlxG.camera.height - 20, true, 0x00000000);
 		
 
+		_fireworks = new Array<Firework>();
+		
 		super.create();	
 		
 	}
@@ -127,6 +132,17 @@ class PlayState extends FlxState
 		public function setLumosity(lumosity:Float) {
 		_lightFilter = new ColorMatrixFilter([1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0.75, 0, 0, 0, 0, 0, lumosity, 0]);
 
+	}
+	
+	public function addFirework(firework:Firework):Void {
+		_fireworks.push(firework);				
+	}
+	
+	public function removeFirework(firework:Firework):Void {
+		_fireworks.remove(firework);
+		
+		firework.destroy();
+		firework = null;
 	}
 	
 	public function addLightSource(point:FlxPoint, radius:Float):Void
@@ -166,7 +182,7 @@ class PlayState extends FlxState
 	/**
 	 * Function that is called when this state is destroyed - you might want to 
 	 * consider setting all objects this state uses to null to help garbage collection.
-	 */																																																																																												
+	 */
 	override public function destroy():Void
 	{
 		super.destroy();
@@ -207,7 +223,9 @@ class PlayState extends FlxState
 			//FlxG.overlap(_player, _grpEnemies, playerTouchEnemy);
 		}
 		
-		
+		for (i in 0..._fireworks.length) {
+			_fireworks[i].update();
+		}
 		
 	}
 	
