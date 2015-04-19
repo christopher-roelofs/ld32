@@ -51,6 +51,8 @@ class PlayState extends FlxState
 	private var _darkMask:FlxSprite;
 	private var _nonHudRect:Rectangle;
 	private var _nonHudPoint:Point;
+	private var _coolDown:Bool = false;
+	private var _enemyTouchCooldownTimer:FlxTimer;
 	
 	private var _fireworks:Array<Firework>;
 	
@@ -220,7 +222,7 @@ class PlayState extends FlxState
 			FlxG.overlap(_player, _grpContainers, playerTouchContainer);
 			FlxG.collide(_grpEnemies, _mWalls);
 			_grpEnemies.forEachAlive(checkEnemyVision);
-			//FlxG.overlap(_player, _grpEnemies, playerTouchEnemy);
+			FlxG.overlap(_player, _grpEnemies, playerTouchEnemy);
 		}
 		
 		for (i in 0..._fireworks.length) {
