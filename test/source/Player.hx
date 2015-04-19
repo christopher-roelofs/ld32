@@ -56,6 +56,8 @@ class Player extends FlxSprite
 		
 		_playState._hud.updateFwHUD(_fw1, _fw2, _fw3, _fw4);
 		
+		
+		
 	}
 	
 	public function new(X:Float=0, Y:Float=0) 
@@ -88,12 +90,14 @@ class Player extends FlxSprite
 		var _down:Bool = false;
 		var _left:Bool = false;
 		var _right:Bool = false;
+		var _togglefw1 = false;
 		
 		#if !FLX_NO_KEYBOARD
 		_up = FlxG.keys.anyPressed(["UP", "W"]);
 		_down = FlxG.keys.anyPressed(["DOWN", "S"]);
 		_left = FlxG.keys.anyPressed(["LEFT", "A"]);
 		_right = FlxG.keys.anyPressed(["RIGHT", "D"]);
+		_togglefw1 = FlxG.keys.anyPressed(["ONE"]);
 		#end
 		#if mobile
 		_up = _up || PlayState.virtualPad.buttonUp.status == FlxButton.PRESSED;
@@ -141,6 +145,11 @@ class Player extends FlxSprite
 				facing = FlxObject.RIGHT;
 			}
 			FlxAngle.rotatePoint(speed, 0, 0, 0, mA, velocity);
+		}
+		
+		if (_togglefw1)
+		{
+		 _playState._hud.toggleFw(1);
 		}
 		
 		if ((velocity.x != 0 || velocity.y != 0) && touching == FlxObject.NONE)

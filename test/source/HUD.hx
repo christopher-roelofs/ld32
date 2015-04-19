@@ -44,17 +44,13 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		
 		_firework4 = new FlxText(420, 2, 0, "Firework4 x 0", 8);
 		_firework4.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
-		
+		add(_sprBack);
 		add(_firework1);
 		add(_firework2);
 		add(_firework3);
 		add(_firework4);
 		
-		//add(_sprBack);
-		//add(_sprHealth);
-		add(_sprMoney);
-		add(_txtHealth);
-		add(_txtMoney);
+		
 		forEach(function(spr:FlxSprite) {
 			spr.scrollFactor.set();
 		});
@@ -75,5 +71,13 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		_firework3.text = "Firework3 x " + Std.string(fw3); 
 		_firework4.text = "Firework4 x " + Std.string(fw4);
 		
+	}
+	
+	public function toggleFw(fw:Int=0):Void
+	{
+		if (fw == 1)
+		{
+			_firework1.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.RED, 1, 1);
+		}
 	}
 }
