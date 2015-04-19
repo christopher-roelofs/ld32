@@ -220,8 +220,8 @@ class BottleRocketExplosion extends Explosion
 		{
 			particle.angle = FlxRandom.float() * 360 - 180;
 		}
-		particle.drag.set(20, 20);
-		
+		particle.drag.set(40, 40);
+		particle.elasticity = 0.1;
 		particle.onEmit();
 	}
 }	
