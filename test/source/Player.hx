@@ -69,26 +69,26 @@ class Player extends FlxSprite
 		_playState.setLumosity(health / 3.0);
 	}
 	
-	public function updateFwInventory(fw:Int)
+	public function updateFwInventory(fw:Int, count:Int)
 	{
 
 		
 		if (fw == 1)
 		{
-			_fw1 ++;
+			_fw1+=count;
 			
 		}
 		else if (fw == 2)
 		{
-			_fw2 ++;
+			_fw2+=count;
 		}
 		else if (fw == 3)
 		{
-			_fw3 ++;
+			_fw3+=count;
 		}
 		else if(fw == 4)
 		{
-			_fw4 ++;
+			_fw4+=count;
 		} else {
 			if (health == 0) {
 				setHealth(3);
@@ -183,17 +183,29 @@ class Player extends FlxSprite
 			if (health > 0 && _holdingFirework == null) {
 				switch(currentFireworkType) {
 					case 1:
-						_holdingFirework = new Sparkler(_playState, this);
-						_playState.addFirework(_holdingFirework);
+						if(_fw1 > 0) {
+							_holdingFirework = new Sparkler(_playState, this);
+							_playState.addFirework(_holdingFirework);
+							updateFwInventory(1,-1);
+						}
 					case 2:
-						_holdingFirework = new Firecracker(_playState, this);
-						_playState.addFirework(_holdingFirework);
+						if(_fw2 > 0) {
+							_holdingFirework = new Firecracker(_playState, this);
+							_playState.addFirework(_holdingFirework);
+							updateFwInventory(2,-1);							
+						}
 					case 3:
-						_holdingFirework = new BottleRocket(_playState, this);
-						_playState.addFirework(_holdingFirework);
+						if(_fw3 > 0) {						
+							_holdingFirework = new BottleRocket(_playState, this);
+							_playState.addFirework(_holdingFirework);
+							updateFwInventory(3,-1);
+						}
 					case 4:
-						_holdingFirework = new Dahlia(_playState, this);
-						_playState.addFirework(_holdingFirework);
+						if(_fw4 > 0) {
+							_holdingFirework = new Dahlia(_playState, this);
+							_playState.addFirework(_holdingFirework);
+							updateFwInventory(4,-1);
+						}
 					default:					
 				}
 				

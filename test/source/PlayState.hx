@@ -282,7 +282,7 @@ private function enemyCoolDown(timer:FlxTimer):Void
  
  
  public function goToGameOver():Void {
-	 
+	FlxG.switchState(new GameOverState(false, -1));
  }
  
 	private function playerTouchEnemy(P:Player, E:Enemy):Void
@@ -318,7 +318,7 @@ private function playerTouchContainer(P:Player, C:Container):Void
 	{
 		if (P.alive && P.exists && C.alive && C.exists)
 		{
-			P.updateFwInventory(FlxRandom.intRanged(1, 5));
+			P.updateFwInventory(FlxRandom.intRanged(1, 5), FlxRandom.intRanged(1,5));
 			C.kill();
 			
 		}

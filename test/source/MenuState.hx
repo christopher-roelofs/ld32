@@ -20,6 +20,7 @@ class MenuState extends FlxState
 	private var _txtTitle:FlxText;
 	private var _btnOptions:FlxButton;
 	private var _btnPlay:FlxButton;
+	private var _btnHints:FlxButton;
 	#if desktop
 	private var _btnExit:FlxButton;
 	#end
@@ -48,7 +49,14 @@ class MenuState extends FlxState
 		_btnPlay.y = FlxG.height - _btnPlay.height - 10;
 		_btnPlay.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(_btnPlay);
+		/*
+		_btnHints = new FlxButton(0, 0, "Hints", clickHints);
+		_btnHints.x = (FlxG.width / 3) - _btnHints.width - 10;
+		_btnHints.y = FlxG.height - _btnHints.height - 10;
+		_btnHints.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
+		add(_btnHints);
 		
+		*/
 		_btnOptions = new FlxButton(0, 0, "Options", clickOptions);
 		_btnOptions.x = (FlxG.width / 2) + 10;
 		_btnOptions.y = FlxG.height - _btnOptions.height - 10;
@@ -74,6 +82,14 @@ class MenuState extends FlxState
 	#end
 	
 	private function clickPlay():Void
+	{
+		FlxG.camera.fade(FlxColor.BLACK,.33, false, function() {
+			FlxG.switchState(new PlayState());
+		});
+	}
+
+	
+	private function clickHints():Void
 	{
 		FlxG.camera.fade(FlxColor.BLACK,.33, false, function() {
 			FlxG.switchState(new PlayState());
