@@ -187,16 +187,15 @@ class Player extends FlxSprite
 		
 		if (cherosiphon)
 		{
-<<<<<<< HEAD
-			updateFwInventory(0, 1);
+			updateFwInventory(0, FlxRandom.intRanged(1,5));
 		}
 		if (sultiBomb)
 		{
-			updateFwInventory(1, 1);
+			updateFwInventory(1, FlxRandom.intRanged(1,2));
 		}
 		if (bangFai)
 		{
-			updateFwInventory(2, 1);
+			updateFwInventory(2, FlxRandom.intRanged(1,3));
 		}
 		if (dahlia)
 		{
@@ -206,31 +205,7 @@ class Player extends FlxSprite
 		{
 			updateFwInventory(4, 1);
 		}
-		
-		
-		
-=======
-			_fw1 += FlxRandom.intRanged(1,5);
-		}
-		if (sultiBomb)
-		{
-			_fw2+= FlxRandom.intRanged(1,2);
-		}
-		if (bangFai)
-		{
-			_fw3 += FlxRandom.intRanged(1,3);
-		}
-		if (dahlia)
-		{
-			_fw4 += FlxRandom.intRanged(1,1);
-		}
-		if (match)
-		{
-			_matches += FlxRandom.intRanged(1, 1);
-		}	
->>>>>>> origin/master
-		
-		_playState._hud.updateFwHUD(_fw1, _fw2, _fw3, _fw4);
+				
 		_playState._hud.updateHUD(_matches);
 	}
 
