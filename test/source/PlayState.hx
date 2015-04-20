@@ -23,6 +23,7 @@ import flash.geom.Point;
 import ld32.SparklerExplosion;
 import ld32.Firework;
 import flixel.util.FlxTimer;
+import flash.geom.Matrix;
 
 
 /**
@@ -178,7 +179,7 @@ class PlayState extends FlxState
 		}
 		else if (entityName == "enemy")
 		{
-			var enemy = new Enemy(x + 4, y, Std.parseInt(entityData.get("etype")));
+			var enemy = new Enemy(x + 4, y, Std.parseInt(entityData.get("etype")), this);
 			enemy.health = 20;
 			_grpEnemies.add(enemy);
 		}
@@ -248,6 +249,10 @@ class PlayState extends FlxState
 		
 	}
 	
+	public function addEnemyKill():Void {
+		_player.updateKillsCount();
+	}
+	
 	override public function draw():Void 
 	{
 		super.draw();
@@ -267,9 +272,11 @@ class PlayState extends FlxState
 		_darkBuffer.drawFrame(true);
 		_darkBuffer.framePixels.applyFilter(_darkBuffer.framePixels, _darkBuffer.framePixels.rect, new Point(), _darkFilter);
 		_darkBuffer.framePixels.copyPixels(_lightSourceBuffer.framePixels, _lightSourceBuffer.framePixels.rect, new Point(), null, null, true);
-		
-		FlxG.camera.buffer.copyPixels(_darkBuffer.framePixels, _darkBuffer.framePixels.rect, _nonHudPoint);		
-		
+		#if flash
+			FlxG.camera.buffer.copyPixels(_darkBuffer.framePixels, _darkBuffer.framePixels.rect, _nonHudPoint);		
+		#else 
+
+		#end
 	}
 	
 	

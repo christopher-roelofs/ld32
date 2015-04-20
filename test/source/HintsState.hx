@@ -16,9 +16,7 @@ class HintsState extends FlxState
 	private var _txtTitle:FlxText;
 	private var _txtHints:FlxText;
 	private var _btnBack:FlxButton;
-	#if desktop
-	private var _btnFullScreen:FlxButton;
-	#end
+
 	
 	override public function create():Void 
 	{
@@ -34,13 +32,6 @@ class HintsState extends FlxState
 		add(_txtHints);
 		
 		
-		#if desktop
-		_btnFullScreen = new FlxButton(0, _barVolume.y + _barVolume.height + 8, FlxG.fullscreen ? "FULLSCREEN" : "WINDOWED", clickFullscreen);
-		_btnFullScreen.screenCenter(true, false);
-		add(_btnFullScreen);
-		#end
-		
-		
 		_btnBack = new FlxButton((FlxG.width/2) - 20, FlxG.height-28, "Back", clickBack);
 		_btnBack.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(_btnBack);
@@ -50,16 +41,7 @@ class HintsState extends FlxState
 		
 		super.create();
 	}
-	
-	#if desktop
-	private function clickFullscreen():Void
-	{
-		FlxG.fullscreen = !FlxG.fullscreen;
-		_btnFullScreen.text = FlxG.fullscreen ? "FULLSCREEN" : "WINDOWED";
-		_save.data.fullscreen = FlxG.fullscreen;
-	}
-	#end
-	
+		
 	/**
 	 * The user clicked the back button - close our save object, and go back to the MenuState
 	 */
@@ -78,8 +60,5 @@ class HintsState extends FlxState
 		// cleanup all our objects!
 		_txtTitle = FlxDestroyUtil.destroy(_txtTitle);
 		_btnBack = FlxDestroyUtil.destroy(_btnBack);
-		#if desktop
-		_btnFullScreen = FlxDestroyUtil.destroy(_btnFullScreen);
-		#end
 	}
 }

@@ -59,8 +59,9 @@ class HUD extends FlxTypedGroup<FlxSprite>
 	
 	
 	private function getNewAlpha(count:Int):Float {
-		var newAlpha = 0.25 + 0.25 * count;
-		return (newAlpha > 1) ? 1 : newAlpha;
+		//var newAlpha = 0.25 + 0.25 * count;
+		//return (newAlpha > 1) ? 1 : newAlpha;
+		return 1;
 		
 	}
 	

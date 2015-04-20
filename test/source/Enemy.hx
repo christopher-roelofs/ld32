@@ -21,11 +21,14 @@ class Enemy extends FlxSprite
 	public var seesPlayer:Bool = false;
 	public var playerPos(default, null):FlxPoint;
 	private var _sndStep:FlxSound;
+	private var _playState:PlayState;
 	
-	public function new(X:Float=0, Y:Float=0, EType:Int) 
-	{
+	public function new(X:Float=0, Y:Float=0, EType:Int, playState:PlayState) 
+	{		
 		super(X, Y);
 		etype = EType;
+		_playState = playState;
+		
 		loadGraphic("assets/images/enemy-" + Std.string(etype) + ".png", true, 16, 16);
 		setFacingFlip(FlxObject.LEFT, false, false);
 		setFacingFlip(FlxObject.RIGHT, true, false);
@@ -130,6 +133,11 @@ class Enemy extends FlxSprite
 		}
 			
 		super.draw();
+	}
+	
+	public override function kill():Void {
+		_playState.addEnemyKill();
+		super.kill();
 	}
 	
 	public function changeEnemy(EType:Int):Void

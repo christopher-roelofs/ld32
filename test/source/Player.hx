@@ -343,7 +343,7 @@ class Player extends FlxSprite
 		
 		if ((velocity.x != 0 || velocity.y != 0) && touching == FlxObject.NONE)
 		{
-			_sndStep.play();
+			//_sndStep.play();
 			
 			if((facing & (FlxObject.LEFT | FlxObject.RIGHT)) != 0) {
 				animation.play("lr");

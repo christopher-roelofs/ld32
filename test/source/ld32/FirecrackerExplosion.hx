@@ -11,7 +11,6 @@ import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxPoint;
 import flixel.util.FlxRandom;
 import openfl.filters.GlowFilter;
-import flash.filters.GradientGlowFilter;
 import flash.filters.BitmapFilterType;
 
 /**
