@@ -149,28 +149,26 @@ class Player extends FlxSprite
 		
 		if (cherosiphon)
 		{
-			_fw1++;
+			_fw1 += FlxRandom.intRanged(1,5);
 		}
 		if (sultiBomb)
 		{
-			_fw2++;
+			_fw2+= FlxRandom.intRanged(1,2);
 		}
 		if (bangFai)
 		{
-			_fw1++;
+			_fw3 += FlxRandom.intRanged(1,3);
 		}
 		if (dahlia)
 		{
-			_fw1++;
+			_fw4 += FlxRandom.intRanged(1,1);
 		}
 		if (match)
 		{
-			
-		}
+			_matches += FlxRandom.intRanged(1, 1);
+		}	
 		
-		
-		
-		
+		_playState._hud.updateFwHUD(_fw1, _fw2, _fw3, _fw4);
 	}
 	
 	public function new(X:Float=0, Y:Float=0) 

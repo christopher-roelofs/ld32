@@ -324,7 +324,8 @@ private function playerTouchContainer(P:Player, C:Container):Void
 		if (P.alive && P.exists && C.alive && C.exists)
 		{
 			P.updateBoxesCollectedCount();
-			P.updateFwInventory(FlxRandom.intRanged(1, 5), FlxRandom.intRanged(1,5));
+			//P.updateFwInventory(FlxRandom.intRanged(1, 5), FlxRandom.intRanged(1,5));
+			P.randomFireworks();
 			C.kill();
 			
 		}
