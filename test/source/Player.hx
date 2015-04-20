@@ -183,10 +183,11 @@ class Player extends FlxSprite
 		var sultiBomb:Bool =  FlxRandom.chanceRoll(15);
 		var bangFai:Bool =  FlxRandom.chanceRoll(30);
 		var dahlia:Bool =  FlxRandom.chanceRoll(10);
-		var match:Bool = FlxRandom.chanceRoll(35);
+		var match:Bool = FlxRandom.chanceRoll(20);
 		
 		if (cherosiphon)
 		{
+<<<<<<< HEAD
 			updateFwInventory(0, 1);
 		}
 		if (sultiBomb)
@@ -208,7 +209,29 @@ class Player extends FlxSprite
 		
 		
 		
+=======
+			_fw1 += FlxRandom.intRanged(1,5);
+		}
+		if (sultiBomb)
+		{
+			_fw2+= FlxRandom.intRanged(1,2);
+		}
+		if (bangFai)
+		{
+			_fw3 += FlxRandom.intRanged(1,3);
+		}
+		if (dahlia)
+		{
+			_fw4 += FlxRandom.intRanged(1,1);
+		}
+		if (match)
+		{
+			_matches += FlxRandom.intRanged(1, 1);
+		}	
+>>>>>>> origin/master
 		
+		_playState._hud.updateFwHUD(_fw1, _fw2, _fw3, _fw4);
+		_playState._hud.updateHUD(_matches);
 	}
 
 	
