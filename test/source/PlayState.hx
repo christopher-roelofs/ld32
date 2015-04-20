@@ -34,8 +34,7 @@ class PlayState extends FlxState
 	
 	private var _player:Player;
 	private var _map:FlxOgmoLoader;
-	private var _mWalls:FlxTilemap;
-	private var _grpCoins:FlxTypedGroup<Coin>;
+	private var _mWalls:FlxTilemap;	
 	private var _grpContainers:FlxTypedGroup<Container>;
 	private var _grpEnemies:FlxTypedGroup<Enemy>;
 	private var _grpExit:FlxTypedGroup<Exit>;
@@ -44,8 +43,7 @@ class PlayState extends FlxState
 	private var _inCombat:Bool = false;	
 	private var _ending:Bool;
 	private var _won:Bool;
-	private var _paused:Bool;
-	private var _sndCoin:FlxSound;
+	private var _paused:Bool;	
 	private var _lightFilter:ColorMatrixFilter;
 	private var _darkFilter:ColorMatrixFilter;
 	private var _frameBuffer:BitmapData;	
@@ -79,9 +77,6 @@ class PlayState extends FlxState
 		_mWalls.setTileProperties(2, FlxObject.ANY);
 		add(_mWalls);
 		
-		_grpCoins = new FlxTypedGroup<Coin>();
-		add(_grpCoins);
-		
 		_grpContainers = new FlxTypedGroup<Container>();
 		add(_grpContainers);
 		
@@ -104,8 +99,6 @@ class PlayState extends FlxState
 		_hud = new HUD();
 		add(_hud);
 		
-		
-		_sndCoin = FlxG.sound.load(AssetPaths.coin__wav);
 		
 		#if mobile
 		virtualPad = new FlxVirtualPad(FULL, NONE);		
@@ -134,6 +127,7 @@ class PlayState extends FlxState
 
 		_fireworks = new Array<Firework>();
 		
+		FlxG.sound.playMusic(AssetPaths.klankbeeldhorrorambience__mp3, .5, true);
 		super.create();	
 		
 	}
@@ -200,11 +194,9 @@ class PlayState extends FlxState
 		super.destroy();
 		_player = FlxDestroyUtil.destroy(_player);
 		_mWalls = FlxDestroyUtil.destroy(_mWalls);
-		_grpCoins = FlxDestroyUtil.destroy(_grpCoins);
 		_grpEnemies = FlxDestroyUtil.destroy(_grpEnemies);
 		_grpContainers = FlxDestroyUtil.destroy(_grpContainers);
 		_hud = FlxDestroyUtil.destroy(_hud);		
-		_sndCoin = FlxDestroyUtil.destroy(_sndCoin);
 		#if mobile
 		virtualPad = FlxDestroyUtil.destroy(virtualPad);
 		#end
@@ -324,7 +316,7 @@ private function playerTouchContainer(P:Player, C:Container):Void
 		if (P.alive && P.exists && C.alive && C.exists)
 		{
 			P.updateBoxesCollectedCount();
-			P.updateFwInventory(FlxRandom.intRanged(1, 5), FlxRandom.intRanged(1,5));
+			P.addRandomFireworks();
 			C.kill();
 			
 		}

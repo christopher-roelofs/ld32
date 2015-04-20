@@ -31,7 +31,7 @@ class OptionsState extends FlxState
 	override public function create():Void 
 	{
 		// setup and add our objects to the screen
-		_txtTitle = new FlxText(0, 20, 0, "Options", 22);
+		_txtTitle = new FlxText(0, 20, 0, "Sound", 22);
 		_txtTitle.alignment = "center";
 		_txtTitle.screenCenter(true, false);
 		add(_txtTitle);
@@ -70,11 +70,11 @@ class OptionsState extends FlxState
 		add(_btnFullScreen);
 		#end
 		
-		_btnClearData = new FlxButton((FlxG.width / 2) - 90, FlxG.height - 28, "Clear Data", clickClearData);
+		_btnClearData = new FlxButton((FlxG.width / 2) - 90, FlxG.height - 28, "Reset", clickClearData);
 		_btnClearData.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(_btnClearData);
 		
-		_btnBack = new FlxButton((FlxG.width/2)+10, FlxG.height-28, "Back", clickBack);
+		_btnBack = new FlxButton((FlxG.width/2)+10, FlxG.height-28, "Apply", clickBack);
 		_btnBack.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(_btnBack);
 		

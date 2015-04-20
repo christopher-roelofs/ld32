@@ -27,6 +27,6 @@ class Firecracker extends Firework
 	}
 	
 	public override function getTypeId():Int {
-		return 2;
+		return 1;
 	}
 }

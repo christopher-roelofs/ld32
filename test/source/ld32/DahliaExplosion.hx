@@ -9,6 +9,8 @@ import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxPoint;
 import flixel.util.FlxRandom;
 import openfl.filters.GlowFilter;
+import flixel.system.FlxSound;
+import flixel.FlxG;
 
 import flixel.effects.particles.FlxParticle;
 import flixel.tile.FlxTilemap;
@@ -70,7 +72,7 @@ class DahliaExplosion extends Explosion
 			add(_blackPixel);
 			
 		}		
-		
+		_explosionSound = FlxG.sound.load(AssetPaths.explosion__mp3);
 	}
 	
 	public override function init(firework:Firework, playState:PlayState, player:Player):Void {
@@ -95,7 +97,8 @@ class DahliaExplosion extends Explosion
 	
 
 	
-	public override function activate():Void {		
+	public override function activate():Void {	
+		_explosionSound.play();
 		super.start(true, duration());
 	}
 

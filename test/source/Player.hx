@@ -22,13 +22,12 @@ import ld32.Sparkler;
 class Player extends FlxSprite
 {
 	public var speed:Float = 200;
-	private var _sndStep:FlxSound;
-	
+	private var _sndStep1:FlxSound;
+	private var _sndStep2:FlxSound;
+	private var _candleOut:FlxSound;
+	private var _candleBlow:FlxSound;
 	private var _lumosity:Int;
-	private var _fw1:Int = 0;
-	private var _fw2:Int = 0;
-	private var _fw3:Int = 0;
-	private var _fw4:Int = 0;
+	private var _fireworks:Array<Int> = [0, 0, 0, 0];
 	private var _matches:Int = 0;
 	private var _candle:Candle;
 	private var _kills:Int = 0;
@@ -39,6 +38,43 @@ class Player extends FlxSprite
 	public var currentFireworkType:Int;
 	private var _playState:PlayState;
 	public var direction:Float;
+	private var _ticks:Float;
+	private var _leftFoot:Bool;
+	
+	
+	
+		
+	public function new(X:Float=0, Y:Float=0) 
+	{
+		super(X, Y);
+		
+
+		
+		loadGraphic(AssetPaths.player__png, true, 16, 16);
+		setFacingFlip(FlxObject.LEFT, false, false);
+		setFacingFlip(FlxObject.RIGHT, true, false);
+		animation.add("d", [0, 1, 0, 2], 6, false);
+		animation.add("lr", [3, 4, 3, 5], 6, false);
+		animation.add("u", [6, 7, 6, 8], 6, false);
+		drag.x = drag.y = 1600;
+		setSize(8, 14);
+		offset.set(4, 2);
+		
+		_sndStep1 = FlxG.sound.load(AssetPaths.footstep1__wav);
+		_sndStep2 = FlxG.sound.load(AssetPaths.footstep2__wav);
+		_candleOut = FlxG.sound.load(AssetPaths.candleout__mp3);
+		_candleBlow = FlxG.sound.load(AssetPaths.candleblow__mp3);
+
+		health = 3;
+		
+		_candle = new Candle();
+		
+		currentFireworkType = -1;
+		direction = 0;
+		_leftFoot = true;
+		_ticks = 0;
+			
+	}
 	
 	public function addToPlayState(playState:PlayState) {
 		_playState = playState;
@@ -82,6 +118,9 @@ class Player extends FlxSprite
 	
 	public function addHealth(hp:Int) {
 		health += hp;
+		if (hp < 0) {
+			_candleBlow.play();
+		}
 		if (health == -1) {
 			_playState.goToGameOver();
 			health = 0;
@@ -92,6 +131,9 @@ class Player extends FlxSprite
 				_usedMatches++;
 				_playState._hud.updateHUD(_matches);
 				health = 3;
+			} else {
+				health == 0;
+				_candleOut.play();
 			}
 		}
 		updateLumosityForHealth();
@@ -105,26 +147,9 @@ class Player extends FlxSprite
 	public function updateFwInventory(fw:Int, count:Int)
 	{
 
-		
-		if (fw == 1)
-		{
-			_fw1+=count;
-			
-		}
-		else if (fw == 2)
-		{
-			_fw2+=count;
-		}
-		else if (fw == 3)
-		{
-			_fw3+=count;
-		}
-		else if(fw == 4)
-		{
-			_fw4+=count;
-		}
-		else
- {
+		if (fw < 4) {
+			_fireworks[fw] += count;
+		} else {		
 			if (health == 0) {
 				setHealth(3);
 			} else {
@@ -133,13 +158,26 @@ class Player extends FlxSprite
 			}
 			
 		}
-		
-		_playState._hud.updateFwHUD(_fw1, _fw2, _fw3, _fw4);
+		autoSelectFirework();
+		_playState._hud.updateFwHUD(_fireworks, currentFireworkType);
 		
 		
 	}
 	
-	public function randomFireworks():Void
+	private function autoSelectFirework() {
+		if (_fireworks[currentFireworkType] == 0) {
+			var i = 0;
+			while (i < 4) {
+				if (_fireworks[i] > 0) {
+					currentFireworkType = i;
+					return;
+				}
+				i++;
+			}
+		}
+	}
+	
+	public function addRandomFireworks():Void
 	{
 		var cherosiphon:Bool = FlxRandom.chanceRoll(100);
 		var sultiBomb:Bool =  FlxRandom.chanceRoll(15);
@@ -149,55 +187,30 @@ class Player extends FlxSprite
 		
 		if (cherosiphon)
 		{
-			_fw1++;
+			updateFwInventory(0, 1);
 		}
 		if (sultiBomb)
 		{
-			_fw2++;
+			updateFwInventory(1, 1);
 		}
 		if (bangFai)
 		{
-			_fw1++;
+			updateFwInventory(2, 1);
 		}
 		if (dahlia)
 		{
-			_fw1++;
+			updateFwInventory(3, 1);
 		}
 		if (match)
 		{
-			
+			updateFwInventory(4, 1);
 		}
 		
 		
 		
 		
 	}
-	
-	public function new(X:Float=0, Y:Float=0) 
-	{
-		super(X, Y);
-		
 
-		
-		loadGraphic(AssetPaths.player__png, true, 16, 16);
-		setFacingFlip(FlxObject.LEFT, false, false);
-		setFacingFlip(FlxObject.RIGHT, true, false);
-		animation.add("d", [0, 1, 0, 2], 6, false);
-		animation.add("lr", [3, 4, 3, 5], 6, false);
-		animation.add("u", [6, 7, 6, 8], 6, false);
-		drag.x = drag.y = 1600;
-		setSize(8, 14);
-		offset.set(4, 2);
-		
-		_sndStep = FlxG.sound.load(AssetPaths.step__wav);
-		
-		health = 3;
-		
-		_candle = new Candle();
-		
-		currentFireworkType = 0;
-		direction = 0;
-	}
 	
 	public function setCurrentFireworkType(fireworkType:Int):Void {
 		currentFireworkType = fireworkType;
@@ -223,10 +236,10 @@ class Player extends FlxSprite
 		_down = FlxG.keys.anyPressed(["DOWN", "S"]);
 		_left = FlxG.keys.anyPressed(["LEFT", "A"]);
 		_right = FlxG.keys.anyPressed(["RIGHT", "D"]);
-		changedFireworkType = (FlxG.keys.anyJustPressed(["ONE"])) ? 1 : changedFireworkType;				
-		changedFireworkType = (FlxG.keys.anyJustPressed(["TWO"])) ? 2 : changedFireworkType;		
-		changedFireworkType = (FlxG.keys.anyJustPressed(["THREE"])) ? 3 : changedFireworkType;		
-		changedFireworkType = (FlxG.keys.anyJustPressed(["FOUR"])) ? 4 : changedFireworkType;		
+		changedFireworkType = (FlxG.keys.anyJustPressed(["ONE"])) ? 0 : changedFireworkType;				
+		changedFireworkType = (FlxG.keys.anyJustPressed(["TWO"])) ? 1 : changedFireworkType;		
+		changedFireworkType = (FlxG.keys.anyJustPressed(["THREE"])) ? 2 : changedFireworkType;		
+		changedFireworkType = (FlxG.keys.anyJustPressed(["FOUR"])) ? 3 : changedFireworkType;		
 		useItem = FlxG.keys.anyJustPressed(["SPACE"]);	
 		#end
 		#if mobile
@@ -252,42 +265,33 @@ class Player extends FlxSprite
 		
 		if (useItem) {	
 			if (health > 0 && _holdingFirework == null) {
+				if (currentFireworkType >= 0 && _fireworks[currentFireworkType] > 0) {
+					
+				
 				switch(currentFireworkType) {
-					case 1:
-						if(_fw1 > 0) {
-							_holdingFirework = new Sparkler(_playState, this);
-							_playState.addFirework(_holdingFirework);
-							updateFwInventory(1,-1);
-						}
-					case 2:
-						if(_fw2 > 0) {
-							_holdingFirework = new Firecracker(_playState, this);
-							_playState.addFirework(_holdingFirework);
-							updateFwInventory(2,-1);							
-						}
+					case 0:					
+						_holdingFirework = new Sparkler(_playState, this);							
+					case 1:						
+						_holdingFirework = new Firecracker(_playState, this);						
+					case 2:						
+						_holdingFirework = new BottleRocket(_playState, this);					
 					case 3:
-						if(_fw3 > 0) {						
-							_holdingFirework = new BottleRocket(_playState, this);
-							_playState.addFirework(_holdingFirework);
-							updateFwInventory(3,-1);
-						}
-					case 4:
-						if(_fw4 > 0) {
-							_holdingFirework = new Dahlia(_playState, this);
-							_playState.addFirework(_holdingFirework);
-							updateFwInventory(4,-1);
-						}
-					default:					
+						_holdingFirework = new Dahlia(_playState, this);
+					
+				}
+				
+				_playState.addFirework(_holdingFirework);
+				updateFwInventory(currentFireworkType, -1);
 				}
 				
 			} else if (_holdingFirework != null) {
 				_holdingFirework.launch(facing);
 				switch(_holdingFirework.getTypeId()) {
-					case 1:						
+					case 0:						
 						_holdingFirework = null;
-					case 2:
+					case 1:
 						_holdingFirework = null;
-					case 4:
+					case 3:
 						_holdingFirework = null;						
 				}
 			}
@@ -343,7 +347,16 @@ class Player extends FlxSprite
 		
 		if ((velocity.x != 0 || velocity.y != 0) && touching == FlxObject.NONE)
 		{
-			//_sndStep.play();
+			if (_ticks > 0.25) {
+				if(_leftFoot) {
+				_sndStep1.play(true);
+				} else {
+					_sndStep2.play(true);
+				}
+				_ticks = 0;
+			}
+			
+			
 			
 			if((facing & (FlxObject.LEFT | FlxObject.RIGHT)) != 0) {
 				animation.play("lr");
@@ -356,8 +369,10 @@ class Player extends FlxSprite
 		
 	}
 	
+	
 	override public function update():Void 
 	{
+		_ticks += FlxG.elapsed;
 		movement();
 		super.update();
 		_candle.updatePosition(x, y);
@@ -365,7 +380,7 @@ class Player extends FlxSprite
 		
 		_playState.addLightSource(getGraphicMidpoint().subtractPoint(offset), 30);
 		if (_holdingFirework != null && !_holdingFirework.isDone) {	
-			if (_holdingFirework.isFuseExpired && _holdingFirework.getTypeId() == 3) {
+			if (_holdingFirework.isFuseExpired && _holdingFirework.getTypeId() == 2) {
 				_holdingFirework = null;
 			} else {
 				_holdingFirework.setPosition(this.getGraphicMidpoint());
@@ -379,6 +394,7 @@ class Player extends FlxSprite
 	{
 		super.destroy();
 		_candle = FlxDestroyUtil.destroy(_candle);
-		_sndStep = FlxDestroyUtil.destroy(_sndStep);
+		_sndStep1 = FlxDestroyUtil.destroy(_sndStep1);
+		_sndStep2 = FlxDestroyUtil.destroy(_sndStep2);
 	}
 }

@@ -17,7 +17,7 @@ class Dahlia extends Firework
 	}
 	
 	public override function getTypeId():Int {
-		return 4;
+		return 3;
 	}
 	
 	public override function enemyCollision(particle:FlxParticle, enemy:Enemy):Void {		

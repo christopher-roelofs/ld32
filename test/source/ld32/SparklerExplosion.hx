@@ -8,6 +8,8 @@ import flixel.util.FlxColor;
 import flixel.util.FlxColorUtil;
 import flixel.util.FlxDestroyUtil;
 import openfl.filters.GlowFilter;
+import flixel.system.FlxSound;
+import flixel.FlxG;
 
 /**
  * ...
@@ -45,6 +47,7 @@ class SparklerExplosion extends Explosion
 			add(_whitePixel);
 			
 		}		
+		_explosionSound = FlxG.sound.load(AssetPaths.fuse__wav);
 		//collides = false;
 	
 	}

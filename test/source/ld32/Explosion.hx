@@ -2,7 +2,10 @@ package ld32;
 
 import flixel.effects.particles.FlxEmitterExt;
 import flixel.effects.particles.FlxParticle;
+import flixel.system.FlxSound;
 import flixel.util.FlxTimer;
+import flixel.system.FlxSound;
+import flixel.FlxG;
 
 /**
  * ...
@@ -20,6 +23,7 @@ class Explosion extends FlxEmitterExt
 	public var isStarted:Bool;
 	
 	public var collides:Bool;
+	private var _explosionSound:FlxSound;
 	
 	public function new(X:Float=0, Y:Float=0, Size:Int=0) 
 	{
@@ -38,6 +42,7 @@ class Explosion extends FlxEmitterExt
 	}
 	
 	public function activate():Void {		
+		_explosionSound.play();
 		super.start(false, duration(), _frequency);
 	}
 	

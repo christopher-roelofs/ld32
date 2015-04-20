@@ -42,7 +42,15 @@ class ApplicationMain {
 		types.push (lime.Assets.AssetType.TEXT);
 		
 		
+		urls.push ("assets/data/room-002.oel");
+		types.push (lime.Assets.AssetType.TEXT);
+		
+		
 		urls.push ("assets/data/test.oep");
+		types.push (lime.Assets.AssetType.TEXT);
+		
+		
+		urls.push ("assets/data/testbk - Copy.oep");
 		types.push (lime.Assets.AssetType.TEXT);
 		
 		
@@ -51,10 +59,6 @@ class ApplicationMain {
 		
 		
 		urls.push ("assets/images/button.png");
-		types.push (lime.Assets.AssetType.IMAGE);
-		
-		
-		urls.push ("assets/images/coin.png");
 		types.push (lime.Assets.AssetType.IMAGE);
 		
 		
@@ -67,10 +71,6 @@ class ApplicationMain {
 		
 		
 		urls.push ("assets/images/enemy-1.png");
-		types.push (lime.Assets.AssetType.IMAGE);
-		
-		
-		urls.push ("assets/images/health.png");
 		types.push (lime.Assets.AssetType.IMAGE);
 		
 		
@@ -90,11 +90,11 @@ class ApplicationMain {
 		types.push (lime.Assets.AssetType.IMAGE);
 		
 		
-		urls.push ("assets/music/HaxeFlixel_Tutorial_Game.mp3");
-		types.push (lime.Assets.AssetType.MUSIC);
+		urls.push ("assets/images/tilesold.png");
+		types.push (lime.Assets.AssetType.IMAGE);
 		
 		
-		urls.push ("assets/music/HaxeFlixel_Tutorial_Game.ogg");
+		urls.push ("assets/music/klankbeeldhorrorambience.mp3");
 		types.push (lime.Assets.AssetType.MUSIC);
 		
 		
@@ -102,28 +102,40 @@ class ApplicationMain {
 		types.push (lime.Assets.AssetType.TEXT);
 		
 		
-		urls.push ("assets/sounds/coin.wav");
+		urls.push ("assets/sounds/begin.mp3");
+		types.push (lime.Assets.AssetType.MUSIC);
+		
+		
+		urls.push ("assets/sounds/candleblow.mp3");
+		types.push (lime.Assets.AssetType.MUSIC);
+		
+		
+		urls.push ("assets/sounds/candleout.mp3");
+		types.push (lime.Assets.AssetType.MUSIC);
+		
+		
+		urls.push ("assets/sounds/explosion.mp3");
+		types.push (lime.Assets.AssetType.MUSIC);
+		
+		
+		urls.push ("assets/sounds/firecracker.wav");
 		types.push (lime.Assets.AssetType.SOUND);
 		
 		
-		urls.push ("assets/sounds/combat.wav");
+		urls.push ("assets/sounds/footstep1.wav");
 		types.push (lime.Assets.AssetType.SOUND);
 		
 		
-		urls.push ("assets/sounds/fled.wav");
+		urls.push ("assets/sounds/footstep2.wav");
 		types.push (lime.Assets.AssetType.SOUND);
 		
 		
-		urls.push ("assets/sounds/hurt.wav");
+		urls.push ("assets/sounds/fuse.wav");
 		types.push (lime.Assets.AssetType.SOUND);
 		
 		
-		urls.push ("assets/sounds/lose.wav");
-		types.push (lime.Assets.AssetType.SOUND);
-		
-		
-		urls.push ("assets/sounds/miss.wav");
-		types.push (lime.Assets.AssetType.SOUND);
+		urls.push ("assets/sounds/rocket.mp3");
+		types.push (lime.Assets.AssetType.MUSIC);
 		
 		
 		urls.push ("assets/sounds/select.wav");
@@ -132,14 +144,6 @@ class ApplicationMain {
 		
 		urls.push ("assets/sounds/sounds-go-here.txt");
 		types.push (lime.Assets.AssetType.TEXT);
-		
-		
-		urls.push ("assets/sounds/step.wav");
-		types.push (lime.Assets.AssetType.SOUND);
-		
-		
-		urls.push ("assets/sounds/win.wav");
-		types.push (lime.Assets.AssetType.SOUND);
 		
 		
 		urls.push ("assets/sounds/beep.mp3");

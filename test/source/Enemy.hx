@@ -44,8 +44,7 @@ class Enemy extends FlxSprite
 		_idleTmr = 0;
 		playerPos = FlxPoint.get();
 		
-		_sndStep = FlxG.sound.load(AssetPaths.step__wav,.4);
-		_sndStep.proximity(x,y,FlxG.camera.target, FlxG.width *.6);
+	
 	}
 	
 	override public function update():Void 
@@ -53,12 +52,7 @@ class Enemy extends FlxSprite
 		if (isFlickering())
 			return;
 		_brain.update();
-		super.update();
-		if ((velocity.x != 0 || velocity.y != 0) && touching == FlxObject.NONE)
-		{
-			_sndStep.setPosition(x + _halfWidth, y + height);
-			//_sndStep.play();
-		}
+		super.update();		
 	}
 	
 	public function idle():Void
@@ -152,7 +146,6 @@ class Enemy extends FlxSprite
 	override public function destroy():Void 
 	{
 		super.destroy();
-		
-		_sndStep = FlxDestroyUtil.destroy(_sndStep);
+				
 	}
 }

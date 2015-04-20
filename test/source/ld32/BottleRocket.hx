@@ -24,7 +24,7 @@ class BottleRocket extends Firework
 
 	
 	public override function getTypeId():Int {
-		return 3;
+		return 2;
 	}
 	
 	public override function launch(direction:Float):Void {

@@ -49,7 +49,7 @@ class Firework
 	}
 	
 	public function launch(direction:Float):Void {
-		
+
 	}
 	
 	public function getTypeId():Int {
@@ -73,6 +73,7 @@ class Firework
 		fuse.visible = false;		
 		_playState.remove(fuse);		
 		_playState.add(explosion);		
+		fuse.stopSound();
 		explosion.activate();
 		_explosionTimer = new FlxTimer(explosion.duration(), explosionExpired, 1);
 		

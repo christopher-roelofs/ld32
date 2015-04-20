@@ -8,6 +8,8 @@ import flixel.util.FlxColor;
 import flixel.util.FlxColorUtil;
 import flixel.util.FlxDestroyUtil;
 import openfl.filters.GlowFilter;
+import flixel.system.FlxSound;
+import flixel.FlxG;
 
 /**
  * ...
@@ -18,6 +20,7 @@ class Fuse extends FlxEmitterExt
 	private var _whitePixel:FlxParticle;
 	private var _glowFilter:GlowFilter;
 	private var _pixelFilter:FlxSpriteFilter;
+	private var _sndFuse:FlxSound;
 	
 	public function new(X:Float=0, Y:Float=0, Size:Int=10) 
 	{
@@ -32,7 +35,7 @@ class Fuse extends FlxEmitterExt
 		
 		_glowFilter = new GlowFilter(0xFFFFAA,0.25,4,4,10,1,false,false);
 		
-		
+		_sndFuse = FlxG.sound.load(AssetPaths.fuse__wav);
 		
 		
 		for (i in 0...(Std.int(maxSize))) 
@@ -49,15 +52,21 @@ class Fuse extends FlxEmitterExt
 		
 	}
 	
+	public function stopSound():Void {
+		_sndFuse.stop();
+	}
 	
 	public function init():Void
 	{
 		super.start(false, .25, 0.01);
+		_sndFuse.play();
+
 	}
 	
 	public override function destroy():Void
 	{
 		_whitePixel = FlxDestroyUtil.destroy(_whitePixel);
+		_sndFuse = FlxDestroyUtil.destroy(_sndFuse);
 		_pixelFilter.destroy();
 	}
 	

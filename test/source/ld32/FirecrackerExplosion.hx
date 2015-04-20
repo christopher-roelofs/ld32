@@ -12,6 +12,8 @@ import flixel.util.FlxPoint;
 import flixel.util.FlxRandom;
 import openfl.filters.GlowFilter;
 import flash.filters.BitmapFilterType;
+import flixel.system.FlxSound;
+import flixel.FlxG;
 
 /**
  * ...
@@ -46,6 +48,7 @@ class FirecrackerExplosion extends Explosion
 			add(_whitePixel);
 			
 		}		
+		_explosionSound = FlxG.sound.load(AssetPaths.firecracker__wav);
 		
 	}
 	
@@ -72,6 +75,7 @@ class FirecrackerExplosion extends Explosion
 
 	
 	public override function activate():Void {		
+		_explosionSound.play();
 		super.start(true, duration());
 	}
 

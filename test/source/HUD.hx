@@ -65,43 +65,44 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		
 	}
 	
-	public function updateFwHUD(fw1:Int = 0, fw2:Int = 0,fw3:Int = 0,fw4:Int = 0):Void
+	public function updateFwHUD(fireworks:Array<Int>, selected:Int=-1):Void
 	{
-		_firework1.text = "Cherosiphon x " + Std.string(fw1);
-		_firework2.text = "Sulti Bomb x " + Std.string(fw2);
-		_firework3.text = "Bang Fai x " + Std.string(fw3); 
-		_firework4.text = "Dahlia x " + Std.string(fw4);
-		_firework1.alpha = getNewAlpha(fw1);
-		_firework2.alpha = getNewAlpha(fw2);
-		_firework3.alpha = getNewAlpha(fw3);
-		_firework4.alpha = getNewAlpha(fw4);
+		_firework1.text = "Cherosiphon x " + Std.string(fireworks[0]);
+		_firework2.text = "Sulti Bomb x " + Std.string(fireworks[1]);
+		_firework3.text = "Bang Fai x " + Std.string(fireworks[2]); 
+		_firework4.text = "Dahlia x " + Std.string(fireworks[3]);
+		//_firework1.alpha = getNewAlpha(fw1);
+		//_firework2.alpha = getNewAlpha(fw2);
+		//_firework3.alpha = getNewAlpha(fw3);
+		//_firework4.alpha = getNewAlpha(fw4);		
+		toggleFw(selected);		
 		
 	}
 	
-	public function toggleFw(fw:Int=0):Void
+	public function toggleFw(fw:Int=-1):Void
 	{
-		if (fw == 1)
+		if (fw == 0)
 		{
 			_firework1.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.RED, 1, 1);
 			_firework2.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
 			_firework3.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
 			_firework4.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
 		}
-		else if (fw == 2)
+		else if (fw == 1)
 		{
 			_firework1.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
 			_firework2.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.RED, 1, 1);
 			_firework3.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
 			_firework4.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
 		}
-		else if (fw == 3)
+		else if (fw == 2)
 		{
 			_firework1.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
 			_firework2.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
 			_firework3.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.RED, 1, 1);
 			_firework4.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
 		}
-		else if (fw == 4)
+		else if (fw == 3)
 		{
 			_firework1.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);
 			_firework2.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.GRAY, 1, 1);

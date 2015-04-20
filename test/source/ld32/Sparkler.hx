@@ -15,7 +15,7 @@ class Sparkler extends Firework
 	}
 	
 	public override function getTypeId():Int {
-		return 1;
+		return 0;
 	}
 	
 	public override function enemyCollision(particle:FlxParticle, enemy:Enemy):Void {		

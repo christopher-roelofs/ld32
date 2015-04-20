@@ -11,6 +11,8 @@ import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxPoint;
 import flixel.util.FlxRandom;
 import openfl.filters.GlowFilter;
+import flixel.system.FlxSound;
+import flixel.FlxG;
 
 /**
  * ...
@@ -21,7 +23,7 @@ class BottleRocketExplosion extends Explosion
 		private var _whitePixel:FlxParticle;
 	private var _glowFilter:GlowFilter;
 	private var _pixelFilter:FlxSpriteFilter;
-	private var _velocity:FlxPoint;
+	private var _velocity:FlxPoint;	
 	
 	public function new(X:Float=0, Y:Float=0, Size:Int=5) 
 	{
@@ -44,8 +46,9 @@ class BottleRocketExplosion extends Explosion
 			_whitePixel.height = 4;
 			add(_whitePixel);
 			
-		}		
+		}
 		
+		_explosionSound = FlxG.sound.load(AssetPaths.rocket__mp3,5);
 		_frequency = 0.01;
 		
 	}
@@ -72,8 +75,9 @@ class BottleRocketExplosion extends Explosion
 	
 
 	
-	public override function activate():Void {		
+	public override function activate():Void {				
 		super.start(false, 0.1, _frequency);
+		_explosionSound.play();
 		_firework.launch(_player.direction);
 	}
 
