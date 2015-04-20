@@ -42,7 +42,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		add(_firework4);
 		
 		_txtHealth = new FlxText(0, 2, 0, "Matches x 0", 8);
-		_txtHealth.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.RED, 1, 1);
+		_txtHealth.setBorderStyle(FlxText.BORDER_SHADOW, FlxColor.BLUE, 1, 1);
 		_txtHealth.alpha = getNewAlpha(0);
 		add(_txtHealth);
 		

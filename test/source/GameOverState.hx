@@ -12,13 +12,11 @@ using flixel.util.FlxSpriteUtil;
 
 class GameOverState extends FlxState
 {
-	private var _score:Int = 0;			// number of coins we've collected
+	
 	private var _win:Bool;				// if we won or lost
+	private var _player:Player;
 	private var _txtTitle:FlxText;		// the title text
 	private var _txtMessage:FlxText;	// the final score message text
-	private var _sprScore:FlxSprite;	// sprite for a coin icon
-	private var _txtScore:FlxText;		// text of the score
-	private var _txtHiScore:FlxText;	// text to show the hi-score
 	private var _btnMainMenu:FlxButton;	// button to go to main menu
 	
 	/**
@@ -26,10 +24,10 @@ class GameOverState extends FlxState
 	 * @param	Win		true if the player beat the boss, false if they died
 	 * @param	Score	the number of coins collected
 	 */
-	public function new(Win:Bool, Score:Int) 
+	public function new(Win:Bool, PlayerObj:Player) 
 	{
 		_win = Win;
-		_score = Score;
+		_player = PlayerObj;
 		super();
 	}
 	
@@ -47,26 +45,11 @@ class GameOverState extends FlxState
 		_txtTitle.screenCenter(true, false);
 		add(_txtTitle);
 		
-		_txtMessage = new FlxText(0, (FlxG.height / 2) - 18, 0, "Final Score:", 8);
+		_txtMessage = new FlxText(0, (FlxG.height / 2) - 18, 0, "Stats:\n\nKills : "+Std.string(_player.getKillCount()+"\nBoxes Collected : "+Std.string(_player.getBoxesCollected())+"\nMatches Used : "+Std.string(_player.getUsedMatchesCount())), 8);
 		_txtMessage.alignment = "center";
 		_txtMessage.screenCenter(true, false);
 		add(_txtMessage);
 		
-		_sprScore = new FlxSprite((FlxG.width / 2) - 8, 0, AssetPaths.coin__png);
-		_sprScore.screenCenter(false, true);
-		add(_sprScore);
-		
-		_txtScore = new FlxText((FlxG.width / 2), 0, 0, Std.string(_score), 8);
-		_txtScore.screenCenter(false, true);
-		add(_txtScore);
-		
-		// we want to see what the hi-score is
-		var _hiScore = checkHiScore(_score);
-		
-		_txtHiScore = new FlxText(0, (FlxG.height / 2) + 10, 0, "Hi-Score: " + Std.string(_hiScore), 8);
-		_txtHiScore.alignment = "center";
-		_txtHiScore.screenCenter(true, false);
-		add(_txtHiScore);
 		
 		_btnMainMenu = new FlxButton(0, FlxG.height - 32, "Return...", goMainMenu);
 		_btnMainMenu.screenCenter(true, false);
@@ -123,8 +106,6 @@ class GameOverState extends FlxState
 		// clean up all our objects!
 		_txtTitle = FlxDestroyUtil.destroy(_txtTitle);
 		_txtMessage = FlxDestroyUtil.destroy(_txtMessage);
-		_sprScore = FlxDestroyUtil.destroy(_sprScore);
-		_txtScore = FlxDestroyUtil.destroy(_txtScore);
 		_btnMainMenu = FlxDestroyUtil.destroy(_btnMainMenu);
 	}
 }
