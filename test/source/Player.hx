@@ -145,7 +145,7 @@ class Player extends FlxSprite
 		var sultiBomb:Bool =  FlxRandom.chanceRoll(15);
 		var bangFai:Bool =  FlxRandom.chanceRoll(30);
 		var dahlia:Bool =  FlxRandom.chanceRoll(10);
-		var match:Bool = FlxRandom.chanceRoll(35);
+		var match:Bool = FlxRandom.chanceRoll(20);
 		
 		if (cherosiphon)
 		{
@@ -169,6 +169,7 @@ class Player extends FlxSprite
 		}	
 		
 		_playState._hud.updateFwHUD(_fw1, _fw2, _fw3, _fw4);
+		_playState._hud.updateHUD(_matches);
 	}
 	
 	public function new(X:Float=0, Y:Float=0) 
