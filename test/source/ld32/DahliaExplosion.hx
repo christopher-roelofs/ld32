@@ -32,16 +32,16 @@ class DahliaExplosion extends Explosion
 
 	public function new(X:Float=0, Y:Float=0, Size:Int=20) 
 	{
-		Size = 20;
+		Size = 60;
 		super(X, Y, Size); 
 		setAlpha(1, 1, 0, 0);
 		rotation = new Bounds<Float>(0, 0);
 		setMotion(0, 400, duration(), 360, 0, 0);		
 		
-		_glowFilterRed = new GlowFilter(0xFF0022,0.75,16,16,10,1,false,false);
-		_glowFilterBlue = new GlowFilter(0x00FF22,0.75,16,16,10,1,false,false);
-		_glowFilterGreen = new GlowFilter(0x0022FF, 0.75, 16, 16, 10, 1, false, false);
-		_glowFilterLight = new GlowFilter(0xFFFFFF, 0.25, 16, 16, 10, 1, false, false);
+		_glowFilterRed = new GlowFilter(0xFF0022,0.75,8,8,10,1,false,false);
+		_glowFilterBlue = new GlowFilter(0x00FF22,0.75,8,8,10,1,false,false);
+		_glowFilterGreen = new GlowFilter(0x0022FF, 0.75, 8, 8, 10, 1, false, false);
+		_glowFilterLight = new GlowFilter(0xFFFFFF, 0.25, 8, 8, 10, 1, false, false);
 		/*
 		
 		var colors = [0xFFFFFF, 0xFFFFFF, 0x0000];
@@ -64,11 +64,11 @@ class DahliaExplosion extends Explosion
 			}
 			_blackPixel.makeGraphic(4, 4, FlxColor.BLACK);
 			_blackPixel.visible = true; 
-			_pixelFilter = new FlxSpriteFilter(_blackPixel, 20, 20);
+			_pixelFilter = new FlxSpriteFilter(_blackPixel, 12, 12);
 			_pixelFilter.addFilter(glowFilter, true);
 			_pixelFilter.addFilter(_glowFilterLight, true);
-			_blackPixel.width = 4;
-			_blackPixel.height = 4;			
+			_blackPixel.width = 8;
+			_blackPixel.height = 8;			
 			add(_blackPixel);
 			
 		}		
