@@ -9,8 +9,6 @@ import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxPoint;
 import flixel.util.FlxRandom;
 import openfl.filters.GlowFilter;
-import flash.filters.GradientGlowFilter;
-import flash.filters.BitmapFilterType;
 
 import flixel.effects.particles.FlxParticle;
 import flixel.tile.FlxTilemap;
@@ -30,10 +28,10 @@ class DahliaExplosion extends Explosion
 	private var _glowFilterLight:GlowFilter;
 	private var _pixelFilter:FlxSpriteFilter;
 
-	public function new(X:Float=0, Y:Float=0, Size:Int=10) 
+	public function new(X:Float=0, Y:Float=0, Size:Int=20) 
 	{
 		Size = 20;
-		super(X, Y, Size);
+		super(X, Y, Size); 
 		setAlpha(1, 1, 0, 0);
 		rotation = new Bounds<Float>(0, 0);
 		setMotion(0, 400, duration(), 360, 0, 0);		
@@ -64,7 +62,7 @@ class DahliaExplosion extends Explosion
 			}
 			_blackPixel.makeGraphic(4, 4, FlxColor.BLACK);
 			_blackPixel.visible = true; 
-			_pixelFilter = new FlxSpriteFilter(_blackPixel, 32, 32);
+			_pixelFilter = new FlxSpriteFilter(_blackPixel, 20, 20);
 			_pixelFilter.addFilter(glowFilter, true);
 			_pixelFilter.addFilter(_glowFilterLight, true);
 			_blackPixel.width = 4;
