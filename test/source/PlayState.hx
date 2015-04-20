@@ -251,9 +251,13 @@ class PlayState extends FlxState
 	override public function draw():Void 
 	{
 		super.draw();
-		
+		#if flash
 		_lightSourceBuffer.pixels.copyPixels(FlxG.camera.buffer, _nonHudRect, new Point());
 		_darkBuffer.pixels.copyPixels(FlxG.camera.buffer, _nonHudRect, new Point());
+		#else
+		_lightSourceBuffer.pixels.draw(FlxG.camera.canvas, new Matrix(1, 0, 0, 1, 0, 0));
+		_darkBuffer.pixels.draw(FlxG.camera.canvas, new Matrix(1, 0, 0, 1, 0, 0));
+		#end
 		FlxSpriteUtil.alphaMaskFlxSprite(_lightSourceBuffer, _lightSourceMask, _lightSourceBuffer);
 		_lightSourceBuffer.dirty = true;
 		_lightSourceBuffer.drawFrame(true);
@@ -263,8 +267,8 @@ class PlayState extends FlxState
 		_darkBuffer.drawFrame(true);
 		_darkBuffer.framePixels.applyFilter(_darkBuffer.framePixels, _darkBuffer.framePixels.rect, new Point(), _darkFilter);
 		_darkBuffer.framePixels.copyPixels(_lightSourceBuffer.framePixels, _lightSourceBuffer.framePixels.rect, new Point(), null, null, true);
-
-		FlxG.camera.buffer.copyPixels(_darkBuffer.framePixels, _darkBuffer.framePixels.rect, _nonHudPoint);
+		
+		FlxG.camera.buffer.copyPixels(_darkBuffer.framePixels, _darkBuffer.framePixels.rect, _nonHudPoint);		
 		
 	}
 	
