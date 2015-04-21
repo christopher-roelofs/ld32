@@ -8,7 +8,7 @@ To Do
     3.change fireworks to an entity system so we can better control them
     4.more levels
     5.new assets
-    6.trick shots for fireworks
+    6.trick shots for bottlerockets
 
 
     
